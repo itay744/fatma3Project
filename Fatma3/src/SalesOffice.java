@@ -34,5 +34,11 @@ public class SalesOffice {
 		System.out.println("Event list:");
 		System.out.println("Customer list:");
 	}
+	
+	 public static double getAvgValue() {
+		 return 0;
+	 }
+	 
+	 
 
 }
