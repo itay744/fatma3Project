@@ -1,0 +1,15 @@
+name	ID	price per ticket
+Olympic Event	1	3000
+WorldCup Event	2	3100
+Coldplay show	3	300
+Madonna show	4	400
+Ehud banay show	5	100
+Geva Alon show	6	200
+Pink floyd show	7	500
+EuroLeage finalfour Event	8	1500
+Independece Rock fesitval 	9	600
+Sunset trip	10	40
+Coast to Coast trip	11	300
+Bodies Exhibition	12	300
+Roie Zivan show	13	60
+Purim party Baraka	14	50
