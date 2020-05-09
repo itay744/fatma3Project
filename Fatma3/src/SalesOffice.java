@@ -1,5 +1,3 @@
-
-//package read_file;
 import java.util.Collections;
 import java.util.Vector;
 import java.io.BufferedReader;
@@ -29,20 +27,9 @@ public class SalesOffice {
 		try {
 			br = new BufferedReader(new FileReader(file + ".txt"));
 			String line;
-			int id;
-			String name;
-			int age;
-			char gender;
-			int registeredByEmpId;
-
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\t");
-				id = Integer.parseInt(temp[0]);
-				name = temp[1];
-				age = Integer.parseInt(temp[2]);
-				gender = temp[3].charAt(0); // צריך לשנות שיהיה char
-				registeredByEmpId = Integer.parseInt(temp[4]);
-				this.custumers.add(new Custumers(id, name, age, gender, registeredByEmpId));
+				this.custumers.add(new Custumers(Integer.parseInt(temp[0]),temp[1],Integer.parseInt(temp[2]),temp[3].charAt(0),Integer.parseInt(temp[4])));
 			}
 
 		} catch (IOException e) {
@@ -62,16 +49,9 @@ public class SalesOffice {
 		try {
 			br = new BufferedReader(new FileReader(file + ".txt"));
 			String line;
-			String name;
-			int id;
-			int pricePerTicket;
-
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\t");
-				name = temp[0];
-				id = Integer.parseInt(temp[1]);
-				pricePerTicket = Integer.parseInt(temp[2]);
-				this.events.add(new Events(name, id, pricePerTicket));
+				this.events.add(new Events(temp[0],Integer.parseInt(temp[1]), Integer.parseInt(temp[2])));
 			}
 
 		} catch (IOException e) {
@@ -91,24 +71,14 @@ public class SalesOffice {
 		try {
 			br = new BufferedReader(new FileReader(file + ".txt"));
 			String line;
-			int eventId;
-			int soldToId;
-			int numberOfTickets;
-			int soldBy;
-			String URL;
-
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\t");
-				eventId = Integer.parseInt(temp[0]);
-				soldToId = Integer.parseInt(temp[1]);
-				numberOfTickets = Integer.parseInt(temp[2]);
-				soldBy = Integer.parseInt(temp[3]);
-				URL = temp[4];
+				String URL = temp[4];
 				if (URL == null) {
-					this.orders.add(new OfflineOrders(eventId, soldToId, numberOfTickets, soldBy));
+					this.orders.add(new OfflineOrders(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]), Integer.parseInt(temp[2]),Integer.parseInt(temp[3])));
 				}
 				if (temp[3] == null) {
-					this.orders.add(new OnlineOrders(eventId, soldToId, numberOfTickets, URL));
+					this.orders.add(new OnlineOrders(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]), Integer.parseInt(temp[2]),temp[4]));
 				}
 
 			}
@@ -130,24 +100,14 @@ public class SalesOffice {
 		try {
 			br = new BufferedReader(new FileReader(file + ".txt"));
 			String line;
-			int id;
-			String name;
-			int age;
-			int phone;
-			int bonusRateForSale;
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\t");
-				id = Integer.parseInt(temp[0]);
-				name = temp[1];
-				age = Integer.parseInt(temp[2]);
-				bonusRateForSale = Integer.parseInt(temp[3]);
-				phone = Integer.parseInt(temp[4]);
 				;
 				if (temp[3] == null) {
-					this.employees.add(new marketingWorkers(id, name, age, phone));
+					this.employees.add(new marketingWorkers(Integer.parseInt(temp[0]),temp[1],Integer.parseInt(temp[2]), Integer.parseInt(temp[4])));
 				}
 				if (temp[4] == null) {
-					this.employees.add(new salesWorkers(id, name, age, bonusRateForSale));
+					this.employees.add(new salesWorkers(Integer.parseInt(temp[0]),temp[1],Integer.parseInt(temp[2]),Integer.parseInt(temp[3])));
 				}
 
 			}
