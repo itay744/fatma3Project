@@ -1,3 +1,4 @@
+import java.util.Vector;
 
 public class marketingWorkers extends Employees {
 	private int phone;
@@ -15,12 +16,39 @@ public class marketingWorkers extends Employees {
 		return this.phone;
 	}
 
-	public int calculateSalary(Custumers custumer) {
-		return this.salary += calculatebonus(custumer);
+	public long calculateSalary(Vector<OfflineOrders> orders, Vector<Custumers> custumers) {
+		salary = countEmpClients(custumers) * signClientBonus;
+
+		return this.salary;
 	}
 
-	public int calculatebonus(Custumers custumer) {
-		return 0;
+	public long getSalary() {
+		return this.salary;
+	}
+
+	public double calculateFutureBonus(Vector<Custumers> custumers, Vector<Orders> order, Vector<Events> events) {// לא בטוח שנכון הייתי כבר לא מרוכז
+		int bonus = 0;
+		for (int i = 0; i < custumers.size(); i++) {
+			if (this.getId() == custumers.elementAt(i).getRegisteredEmpId()) {
+				for (int j = 0; j < order.size(); j++) {
+					if (this.getId() == order.elementAt(j).getEventId()) {
+						bonus += bonusRate * order.elementAt(j).getOrderPrice(events);
+					}
+				}
+
+			}
+		}
+		return bonus;
+	}
+
+	public int countEmpClients(Vector<Custumers> custumers) {
+		int counter = 0;
+		for (int i = 0; i < custumers.size(); i++) {
+			if (this.getId() == custumers.elementAt(i).getRegisteredEmpId()) {
+				counter++;
+			}
+		}
+		return counter;
 	}
 
 }

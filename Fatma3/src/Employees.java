@@ -1,3 +1,4 @@
+import java.util.Vector;
 
 abstract class Employees {
 	private int id;
@@ -16,16 +17,18 @@ abstract class Employees {
 	}
 
 	public String getName() {
-		return this.name;
+		return new String(name);
 	}
 
 	public int getAge() {
 		return this.age;
 	}
+	
+	abstract public long getSalary();
 
-	abstract int calculateSalary(Custumers custumer);
+	abstract long calculateSalary(Vector <OfflineOrders> orders,Vector <Custumers> custumers);
 
-	abstract int calculatebonus(Custumers custumer);
+//	abstract int calculatebonus(Custumers custumer);
 
 //abstract long calculateSales();
 }

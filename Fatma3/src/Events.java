@@ -16,7 +16,7 @@ public class Events {
 	}
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public String getName() {
@@ -24,7 +24,7 @@ public class Events {
 	}
 
 	public double getPricePerTicket() {
-		return this.pricePerTicket;
+		return pricePerTicket;
 	}
 
 

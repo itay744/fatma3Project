@@ -5,5 +5,9 @@ public class OnlineOrders extends Orders {
 		super(eventId, soldToId, numberOfTickets);
 		this.url = url;
 	}
+	
+	public String getUrl() {
+		return new String(url);
+	}
 
 }

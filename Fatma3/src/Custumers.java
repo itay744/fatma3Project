@@ -1,3 +1,4 @@
+import java.util.Vector;
 
 public class Custumers {
 	private int id;
@@ -38,5 +39,15 @@ public class Custumers {
 
 	public int getRegisteredEmpId() {
 		return this.registeredByEmpId;
+	}
+	
+	public int getTickets(Vector <Orders> orders) {
+		int counter=0;
+		 for (int i = 0 ; i < orders.size() ; i++) {
+	            if (this.getId() == (orders.elementAt(i).getSoldToId()) ) {
+	             counter++;
+	            }
+	          }
+		return counter;
 	}
 }

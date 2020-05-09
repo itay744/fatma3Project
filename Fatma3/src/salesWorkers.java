@@ -1,36 +1,36 @@
+import java.util.Vector;
 
 public class salesWorkers extends Employees {
-	private long bonusRate;
-	private int salary;
+	private long saleRate;
+	private long salary;
 
 	public salesWorkers(int id, String Name, int Age, int bonusRate) {
 		super(id, Name, Age);
 		this.salary = 0;
-		this.bonusRate = bonusRate;
-		
+		this.saleRate = bonusRate;
+
 	}
 
-	public long getBonusRateForSale() {
-		return bonusRate;
+	public long getSaleRate() {
+		return saleRate;
 	}
 
-	public int calculateSalary(Custumers custumer) {
-
-		return salary += calculatebonus(custumer);
+	public long calculateSalary(Vector<OfflineOrders> orders,Vector <Custumers> custumers) {
+		salary = this.countSales(orders) * saleRate;
+		return salary;
 	}
 
-	public int calculatebonus(Custumers custumer) {
-
-		return 0;
-	}
-
-	public int getSalary() {
-
+	public long getSalary() {
 		return this.salary;
 	}
 
-	public int countSales() {
+	public int countSales(Vector<OfflineOrders> orders) {
 		int counter = 0;
+		for (int i = 0; i < orders.size(); i++) {
+			if (this.getId() == orders.elementAt(i).getSoldBy()) {
+				counter++;
+			}
+		}
 		return counter;
 	}
 
