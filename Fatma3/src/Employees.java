@@ -1,34 +1,31 @@
 
 abstract class Employees {
-protected int ID; 
-protected String Name;
-protected int	Age;
+	private int id;
+	private String name;
+	private int age;
 
+	public Employees(int id, String name, int age) {
+		this.id = id;
+		this.name = name;
+		this.age = age;
 
-protected Employees(int ID, String Name, int Age) {
-	this.ID = ID; 
-	this.Name = Name;
-	this.Age = Age;
+	}
 
-}
+	public int getId() {
+		return this.id;
+	}
 
-public int getID() {
-	return ID;
-}
+	public String getName() {
+		return this.name;
+	}
 
-public String getName() {
-	return Name;
-}
+	public int getAge() {
+		return this.age;
+	}
 
-public String getAge() {
-	return Name;
-}
+	abstract int calculateSalary(Custumers custumer);
 
-abstract int calculateSalary(Customers customer);
-
-abstract int calculatebonus(Customers customer);
+	abstract int calculatebonus(Custumers custumer);
 
 //abstract long calculateSales();
 }
-
-

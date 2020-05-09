@@ -5,5 +5,10 @@ public class OfflineOrders extends Orders {
 		super(eventId, soldToId, numberOfTickets);
 		this.soldByEmpId = soldByEmpId;
 	}
+	
+	public int getSellerId() {
+		return soldByEmpId;
+	}
+
 
 }

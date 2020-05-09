@@ -1,42 +1,37 @@
 
-public class salesWorkers extends Employees{
-    private long BonusRateForSale;	
-    private int Salary;
-	
-	
-	public salesWorkers(int ID, String Name, int Age) {
-		super(ID, Name, Age);
-		this.Salary = 0;
-		// BonusRateForSale // לקבל מהקובץ נתונים
-	}
-	
-	public long getBonusRateForSale() {
-		return BonusRateForSale;
+public class salesWorkers extends Employees {
+	private long bonusRate;
+	private int salary;
+
+	public salesWorkers(int id, String Name, int Age, int bonusRate) {
+		super(id, Name, Age);
+		this.salary = 0;
+		this.bonusRate = bonusRate;
+		
 	}
 
-	
-	public int calculateSalary(Customers customer) {
-		
-		return Salary = Salary + calculatebonus(customer);
+	public long getBonusRateForSale() {
+		return bonusRate;
 	}
-    
-	
-	public int calculatebonus(Customers customer) {
-			
+
+	public int calculateSalary(Custumers custumer) {
+
+		return salary += calculatebonus(custumer);
+	}
+
+	public int calculatebonus(Custumers custumer) {
+
 		return 0;
 	}
-	
+
 	public int getSalary() {
-		return Salary;
+
+		return this.salary;
 	}
-	
-	
-	
-	
 
-	
-
-	
-	
+	public int countSales() {
+		int counter = 0;
+		return counter;
+	}
 
 }
