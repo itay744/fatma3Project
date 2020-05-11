@@ -1,8 +1,11 @@
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Vector;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+
+// קיצרתי את הפונקציות של הטקסט ועדכנתי את הפונקצייה של ה- מקס
 
 public class SalesOffice {
 	public Vector<Custumers> custumers;
@@ -16,9 +19,10 @@ public class SalesOffice {
 		orders = new Vector<Orders>();
 		employees = new Vector <Employees>();
 		readEventsFromFile(fileEvents);
+		readEmployeesFromFile(fileEmployees);
 		readCustumersFromFile(fileCustumers);
 		readOrdersFromFile(fileTicketsSales);
-		readEmployeesFromFile(fileEmployees);
+		
 
 	}
 
@@ -27,9 +31,10 @@ public class SalesOffice {
 		try {
 			br = new BufferedReader(new FileReader(file + ".txt"));
 			String line;
+			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\t");
-				this.custumers.add(new Custumers(Integer.parseInt(temp[0]),temp[1],Integer.parseInt(temp[2]),temp[3].charAt(0),Integer.parseInt(temp[4])));
+				this.custumers.add(new Custumers(Integer.parseInt(temp[0]),temp[1],Integer.parseInt(temp[2]),temp[3].charAt(0),Integer.parseInt(temp[4]),this.orders,this.events));
 			}
 
 		} catch (IOException e) {
@@ -49,9 +54,10 @@ public class SalesOffice {
 		try {
 			br = new BufferedReader(new FileReader(file + ".txt"));
 			String line;
+			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\t");
-				this.events.add(new Events(temp[0],Integer.parseInt(temp[1]), Integer.parseInt(temp[2])));
+				this.events.add(new Events(temp[0],Integer.parseInt(temp[1]), Integer.parseInt(temp[2]),this.orders));
 			}
 
 		} catch (IOException e) {
@@ -71,6 +77,7 @@ public class SalesOffice {
 		try {
 			br = new BufferedReader(new FileReader(file + ".txt"));
 			String line;
+			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\t");
 				String URL = temp[4];
@@ -100,6 +107,7 @@ public class SalesOffice {
 		try {
 			br = new BufferedReader(new FileReader(file + ".txt"));
 			String line;
+			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\t");
 				;
@@ -160,13 +168,19 @@ public class SalesOffice {
 		return 0;
 	}
 	
-	public static Comparable getMax(Vector v) {
-		Collections.sort(v, new EmployeeSalaryComparator());
-		return 0;
+	public static Comparable getMax(Vector<Comparable> comparable) {
+		Comparable max = comparable.elementAt(0);
+		for (int i = 1; i< comparable.size(); i++) {
+			if(comparable.elementAt(i).compareTo(max)>0){
+				max = comparable.elementAt(i);
+			}
+		}
+		return max;
+		
 		
 	}
 	
-	
 
+	
 
 }
