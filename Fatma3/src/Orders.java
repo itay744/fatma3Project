@@ -1,6 +1,6 @@
 import java.util.Vector;
 
-public class Orders {
+public class Orders implements Comparable<Orders> {
 	private int eventId;
 	private int soldToId;
 	private int numberOfTickets;
@@ -33,6 +33,24 @@ public class Orders {
 	public String getURL() {
 		return URL;
 	}
+    
+	public int numOfTicketPerCustumer(Custumers custumer) {
+		if(this.getSoldToId() == custumer.getId()) {
+			return this.numberOfTickets;
+		}
+		else
+			return 0;
+	}
+	
+	public int getPricePerOrder(Vector<Events> events) {
+		int price = 0;
+		for (int i = 0; i < events.size(); i++) {
+			if (this.getEventId() == events.elementAt(i).getId()) {
+				price += events.elementAt(i).getPricePerTicket(); 
+			}
+		}
+		return price;
+	}
 
 	public int getOrderPrice(Vector<Events> events) {
 		int price = 0;
@@ -42,6 +60,12 @@ public class Orders {
 			}
 		}
 		return price;
+	}
+
+
+	@Override
+	public int compareTo(Orders o) {
+		return this.getNumberOfTickets() - o.getNumberOfTickets();
 	}
 
 }
