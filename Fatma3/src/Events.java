@@ -1,10 +1,12 @@
+import java.util.Vector;
 
-public class Events {
+public class Events implements Comparable <Events> {
 	private String name;
 	private int id;
 	private double pricePerTicket;
+	private int numOFTicketToTheEvent;
 
-	public Events(String name, int id, double pricePerTicket) {
+	public Events(String name, int id, double pricePerTicket,Vector<Orders> orders) {
 
 		this.name = name;
 		this.id = id;
@@ -12,11 +14,12 @@ public class Events {
 			throw new NegativePriceException();
 		}
 		this.pricePerTicket = pricePerTicket;
+		this.numOFTicketToTheEvent = numOFTicketToTheEvent(orders);
 		
 	}
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public String getName() {
@@ -24,8 +27,29 @@ public class Events {
 	}
 
 	public double getPricePerTicket() {
-		return pricePerTicket;
+		return this.pricePerTicket;
 	}
+	
+	public double getNumOFTicketToTheEvent() {
+		return this.numOFTicketToTheEvent;
+	}
+	
+	public int numOFTicketToTheEvent(Vector<Orders> orders) {
+		int count = 0;
+		for(int i = 0; i< orders.size(); i++) {
+			if(orders.elementAt(i).getEventId() == this.id) {
+				count = count + orders.elementAt(i).getNumberOfTickets();
+			}
+		}
+		return count;
+		
+	}
+
+	@Override
+	public int compareTo(Events o) {
+		return (int) (this.numOFTicketToTheEvent - o.getNumOFTicketToTheEvent());
+	}
+
 
 
 }
