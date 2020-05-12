@@ -5,9 +5,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-// תסתכל על הפונקצית מקס, סידרתי את השגיאות וקיצרתי קצת את הבנאים של הוקטורים
-
-
+// הוספתי את הבדיקת שגיאה בבנאי 
+//סידרתי את השגיאות וקיצרתי קצת את הבנאים של הוקטורים
+//  עשיתי את השיטה של - בעזרת שתי פונקציות עזר (פרייבט) צריך לבדוק את הארוכה מבינהם אני לא סגורה עליה 100 printAgeReport  
+// סידרתי את הפונקציית קלס, תסתכל עליה.
+//הוספתי קלאס מיין כדי שנוכל לבדוק את עצמנו 
 public class SalesOffice {
 	public Vector<Custumers> custumers;
 	public Vector<Events> events;
@@ -144,14 +146,62 @@ public class SalesOffice {
 	}
 
 	public void printAgeReport(int eventID) {
+	    int [] custumerPerAge = custumersPerAgeToEvent(eventID);
+	    int custumerToEvent = sumOfCustumerToEvent(eventID);
 		System.out.println("Event name:");
-		System.out.println("0-18: ");
-		System.out.println("18-24: ");
-		System.out.println("25-35: ");
-		System.out.println("36-50: ");
-		System.out.println("51-70: ");
-		System.out.println("71+: ");
+		System.out.println("0-18: " + custumerPerAge[0]/custumerToEvent*100 );
+		System.out.println("18-24: " + custumerPerAge[1]/custumerToEvent*100);
+		System.out.println("25-35: " + custumerPerAge[2]/custumerToEvent*100);
+		System.out.println("36-50: " + custumerPerAge[3]/custumerToEvent*100);
+		System.out.println("51-70: " + custumerPerAge[4]/custumerToEvent*100);
+		System.out.println("71+: "+ custumerPerAge[5]/custumerToEvent*100);
 
+	}
+	
+	private int[] custumersPerAgeToEvent(int eventID) {
+		int firstAge = 0, secondAge = 0, thirdAge = 0, fourthAge = 0, fifthAge = 0, sixAge = 0;
+		int totalCustumers = 0;
+		for (int i = 0; i< this.orders.size(); i++) {
+			if(this.orders.elementAt(i).getEventId()== eventID) {
+				for(int j=0; j< this.custumers.size(); i++) {
+				    if(this.orders.elementAt(i).getSoldToId()== custumers.elementAt(j).getId()) {
+					
+					    if(custumers.elementAt(j).getAge()>= 0 && custumers.elementAt(j).getAge()<19) {
+						   firstAge++;
+					    }
+					    if(custumers.elementAt(j).getAge()>= 19 && custumers.elementAt(j).getAge()<25) {
+						   firstAge++;
+					    }
+					    if(custumers.elementAt(j).getAge()>= 25 && custumers.elementAt(j).getAge()<36) {
+						   firstAge++;
+					    }
+					    if(custumers.elementAt(j).getAge()>= 36 && custumers.elementAt(j).getAge()<51) {
+						   firstAge++;
+					    }
+					    if(custumers.elementAt(j).getAge()>= 51 && custumers.elementAt(j).getAge()<71) {
+						   firstAge++;
+					    }
+					    if(custumers.elementAt(j).getAge()>= 71) {
+						   firstAge++;
+					    }
+				    }
+				}
+			}
+			
+		}
+		int [] ageCustumers = {firstAge, secondAge, thirdAge, fourthAge, fifthAge , sixAge};
+		return ageCustumers;		
+		
+	}
+	
+	private int sumOfCustumerToEvent(int eventID) {
+		int sumOfCustumers = 0;
+		for (int i = 0; i< this.events.size(); i++) {
+			if(this.orders.elementAt(i).getEventId()== eventID) {
+				sumOfCustumers++;
+			}
+		}
+		return sumOfCustumers;
 	}
 
 	public double getOnlineProportion() {
