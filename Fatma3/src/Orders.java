@@ -34,7 +34,7 @@ public class Orders implements Comparable<Orders> {
 		return URL;
 	}
     
-	public int numOfTicketPerCustumer(Custumers custumer) {
+	public int numOfTicketPerCustumer(Customers custumer) {
 		if(this.getSoldToId() == custumer.getId()) {
 			return this.numberOfTickets;
 		}

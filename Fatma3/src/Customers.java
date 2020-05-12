@@ -1,6 +1,6 @@
-importimport java.util.Vector;
+import java.util.Vector;
 
-public class Custumers implements Comparable<Custumers>{
+public class Customers implements Comparable<Customers>{
 	private int id;
 	private String name;
 	private int age;
@@ -10,7 +10,7 @@ public class Custumers implements Comparable<Custumers>{
 	private static final char MALE = 'm';
 	private static final char FEMALE = 'f';
 
-	public Custumers(int id, String name, int age, char gender, int empId,Vector <Orders> orders,Vector <Events> events)  {
+	public Customers(int id, String name, int age, char gender, int empId,Vector <Orders> orders,Vector <Events> events) throws WrongGenderInputException  {
 
 		this.id = id;
 		this.name = name;
@@ -70,7 +70,7 @@ public class Custumers implements Comparable<Custumers>{
 
 
 	@Override
-	public int compareTo(Custumers o) {
+	public int compareTo(Customers o) {
 	
 		return (int) (this.totalAmountOrders - o.getTotalAmountOrders());
 	}

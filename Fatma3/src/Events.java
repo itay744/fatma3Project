@@ -6,7 +6,7 @@ public class Events implements Comparable <Events> {
 	private double pricePerTicket;
 	private int numOFTicketToTheEvent;
 
-	public Events(String name, int id, double pricePerTicket,Vector<Orders> orders) {
+	public Events(String name, int id, double pricePerTicket,Vector<Orders> orders) throws NegativePriceException {
 
 		this.name = name;
 		this.id = id;

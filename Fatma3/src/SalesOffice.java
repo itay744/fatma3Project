@@ -11,13 +11,13 @@ import java.io.IOException;
 // סידרתי את הפונקציית קלס, תסתכל עליה.
 //הוספתי קלאס מיין כדי שנוכל לבדוק את עצמנו 
 public class SalesOffice {
-	public Vector<Custumers> custumers;
+	public Vector<Customers> custumers;
 	public Vector<Events> events;
 	public Vector<Orders> orders;
 	public Vector<Employees> employees;
 
 	public SalesOffice(String fileEvents, String fileEmployees, String fileCustumers, String fileTicketsSales) {
-		custumers = new Vector<Custumers>();
+		custumers = new Vector<Customers>();
 		events = new Vector<Events>();
 		orders = new Vector<Orders>();
 		employees = new Vector <Employees>();
@@ -47,7 +47,7 @@ public class SalesOffice {
 			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\t");
-				this.custumers.add(new Custumers(Integer.parseInt(temp[0]),temp[1],Integer.parseInt(temp[2]),temp[3].charAt(0),Integer.parseInt(temp[4]),this.orders,this.events));
+				this.custumers.add(new Customers(Integer.parseInt(temp[0]),temp[1],Integer.parseInt(temp[2]),temp[3].charAt(0),Integer.parseInt(temp[4]),this.orders,this.events));
 			}
 
 		} catch (IOException e) {
@@ -125,10 +125,10 @@ public class SalesOffice {
 				String temp[] = line.split("\t");
 				;
 				if (temp[3] == null) {
-					this.employees.add(new marketingWorkers(Integer.parseInt(temp[0]),temp[1],Integer.parseInt(temp[2]), Integer.parseInt(temp[4])));
+					this.employees.add(new MarketingWorkers(Integer.parseInt(temp[0]),temp[1],Integer.parseInt(temp[2]), Integer.parseInt(temp[4])));
 				}
 				if (temp[4] == null) {
-					this.employees.add(new salesWorkers(Integer.parseInt(temp[0]),temp[1],Integer.parseInt(temp[2]),Integer.parseInt(temp[3])));
+					this.employees.add(new SalesWorkers(Integer.parseInt(temp[0]),temp[1],Integer.parseInt(temp[2]),Integer.parseInt(temp[3])));
 				}
 
 			}

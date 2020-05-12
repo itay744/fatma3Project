@@ -34,7 +34,7 @@ abstract class Employees implements Comparable <Employees> {
 		return salary +num ;
 	}
 	
-	abstract public void calculateSalary(Vector<OfflineOrders> orders,Vector <Custumers> custumers,Vector<Events> events);
+	abstract public void calculateSalary(Vector<OfflineOrders> orders,Vector <Customers> custumers,Vector<Events> events);
 
 
 }
