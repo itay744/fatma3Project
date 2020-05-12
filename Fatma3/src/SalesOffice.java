@@ -5,7 +5,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-// קיצרתי את הפונקציות של הטקסט ועדכנתי את הפונקצייה של ה- מקס
+// תסתכל על הפונקצית מקס, סידרתי את השגיאות וקיצרתי קצת את הבנאים של הוקטורים
+
 
 public class SalesOffice {
 	public Vector<Custumers> custumers;
@@ -18,15 +19,25 @@ public class SalesOffice {
 		events = new Vector<Events>();
 		orders = new Vector<Orders>();
 		employees = new Vector <Employees>();
-		readEventsFromFile(fileEvents);
+		try {
+			readEventsFromFile(fileEvents);
+		} catch (NegativePriceException e1) {
+			// TODO Auto-generated catch block
+			e1.getMessage();
+		}
 		readEmployeesFromFile(fileEmployees);
-		readCustumersFromFile(fileCustumers);
+		try {
+			readCustumersFromFile(fileCustumers);
+		} catch (WrongGenderInputException e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+		}
 		readOrdersFromFile(fileTicketsSales);
 		
 
 	}
 
-	private void readCustumersFromFile(String file) { // reads from the Customers file.
+	private void readCustumersFromFile(String file) throws WrongGenderInputException{ // reads from the Customers file.
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(file + ".txt"));
@@ -49,7 +60,7 @@ public class SalesOffice {
 		}
 	}
 
-	private void readEventsFromFile(String file) { // reads from the Customers file.
+	private void readEventsFromFile(String file) throws NegativePriceException{ // reads from the Customers file.
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(file + ".txt"));
