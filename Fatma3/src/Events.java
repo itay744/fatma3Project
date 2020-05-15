@@ -51,7 +51,8 @@ public class Events implements Comparable <Events>, Valueable {
 
 	@Override
 	public int compareTo(Events other) {
-		return (int) (this.totalTickets - other.totalTickets);
+		double answer = this.totalTickets - other.totalTickets;
+		return (int)answer ;
 	}
 
 

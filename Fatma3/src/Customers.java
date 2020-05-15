@@ -7,6 +7,7 @@ public class Customers implements Comparable<Customers>, Valueable {
 	private int age;
 	private char gender;
 	private int registeredByEmpId;
+	private int totalTickets;
 	private double totalOrdersPrice;
 	private static final char MALE = 'm';
 	private static final char FEMALE = 'f';
@@ -23,6 +24,7 @@ public class Customers implements Comparable<Customers>, Valueable {
 		this.gender = gender;
 		registeredByEmpId = empId;
 		totalOrdersPrice = calculatePriceForOrders(orders, events);
+		totalTickets = countTickets(orders);
 	}
 
 	public int getId() {
@@ -37,7 +39,7 @@ public class Customers implements Comparable<Customers>, Valueable {
 		return age;
 	}
 
-	public int getGender() {
+	public char getGender() {
 		return gender;
 	}
 
@@ -59,7 +61,7 @@ public class Customers implements Comparable<Customers>, Valueable {
 		return totalPrice;
 	}
 
-	public int getTickets(Vector<Orders> orders) {
+	public int countTickets(Vector<Orders> orders) {
 		int counter = 0;
 		for (int i = 0; i < orders.size(); i++) {
 			if (this.getId() == (orders.elementAt(i).getCustomerId())) {
@@ -68,11 +70,10 @@ public class Customers implements Comparable<Customers>, Valueable {
 		}
 		return counter;
 	}
-
+	
 	@Override
 	public int compareTo(Customers other) {
-
-		return (int) (this.totalOrdersPrice - other.totalOrdersPrice);
+		return this.totalTickets- other.totalTickets;
 	}
 
 

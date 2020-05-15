@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
@@ -213,45 +214,54 @@ public class SalesOffice {
 		}
 		return sumOfCustumers;
 	}
-	
-	public double getOnlineProportion() {
-	   int onlineOrders = 0;
-	   for(int i = 0; i<this.orders.size(); i ++) {
-		   if(this.orders.elementAt(i) instanceof OnlineOrders) {
-			   onlineOrders++;
-		   }
-	   }
-		return (double)onlineOrders/this.orders.size();
+
+	public double getOnlineProportion2() {
+		int onlineOrders = 0;
+		for (int i = 0; i < this.orders.size(); i++) {
+			if (this.orders.elementAt(i) instanceof OnlineOrders) {
+				onlineOrders++;
+			}
+		}
+		return (double) onlineOrders / this.orders.size();
 	}
 
 	public double getBalance() {
-		double inComes = 0;
-		int outComes = 0;
-		 for(int i = 0; i<this.orders.size(); i ++) {
-			   inComes += this.orders.elementAt(i).getOrderPrice(this.events)*this.orders.elementAt(i).getNumOfTickets();
-		   }
-		 for(int j = 0; j<this.employees.size(); j++) {
-			 outComes += this.employees.elementAt(j).getSalary();
-		 }
-		
-		return (inComes - outComes);
+		double revenue = 0;
+		int expenses = 0;
+		for (int i = 0; i < orders.size(); i++) {
+			revenue += orders.elementAt(i).getOrderPrice(events);
+		}
+		for (int i = 0; i < employees.size(); i++) {
+			expenses += employees.elementAt(i).getSalary();
+		}
+
+		return revenue - expenses;
 	}
 
 	public void firmReport() {
 
 		System.out.println("SalesOffice report:");
 		System.out.println("Employees list:");
+		Collections.sort(employees);
+		Collections.reverse(employees);
+		for (int i = 0; i < employees.size(); i++) {
+			System.out.println("Name: " + employees.elementAt(i).getName() + " ; age: " + employees.elementAt(i).getAge());
+		}
+		System.out.println("---------------");
+		Collections.sort(events);
+		Collections.reverse(events);
 		System.out.println("Event list:");
+		for (int i = 0; i < events.size(); i++) {
+			System.out.println("Name: " + events.elementAt(i).getName());
+		}
+		System.out.println("---------------");
+		Collections.sort(customers);
+		Collections.reverse(customers);
 		System.out.println("Customer list:");
-	}
-
-	public static double getAvgValue() {
-		return 0;
-	}
-
-	public int countEmpSales(int SellerId, Vector offlineOrders) {
-
-		return 0;
+		for (int i = 0; i < customers.size(); i++) {
+			System.out.println("Name: " + customers.elementAt(i).getName() + " ; age: " + customers.elementAt(i).getAge()
+					+ " ; Gender: " + customers.elementAt(i).getGender());
+		}
 	}
 
 	public static Comparable<?> getMax(Vector<? extends Comparable> comparable) {
@@ -265,7 +275,7 @@ public class SalesOffice {
 
 	}
 
-	private double countOnlineOrders(Vector<Orders> orders) {
+	private double countOnlineOrders() {
 		double counter = 0;
 		for (int i = 0; i < orders.size(); i++) {
 			if (orders.get(i) instanceof OnlineOrders) {
@@ -275,7 +285,7 @@ public class SalesOffice {
 		return counter;
 	}
 
-	private double countOrders(Vector<Orders> orders) {
+	private double countOrders() {
 		double counter = 0;
 		for (int i = 0; i < orders.size(); i++) {
 			counter++;
@@ -284,8 +294,8 @@ public class SalesOffice {
 		return counter;
 	}
 
-	public double getOnlineProportion(Vector<Orders> orders) {
-		double proportion = countOnlineOrders(orders) / countOrders(orders);
+	public double getOnlineProportion() {
+		double proportion = countOnlineOrders() / countOrders();
 		return proportion;
 	}
 
@@ -306,11 +316,12 @@ public class SalesOffice {
 		String fCustomers = new String("Customers.txt");
 		String fOrders = new String("Orders.txt");
 		SalesOffice s = new SalesOffice(fEvents, fEmployees, fCustomers, fOrders);
-
-		Comparable a = getMax(s.employees);
-		System.out.println(((Employees) a).getSalary());
+//
+//		Comparable a = getMax(s.employees);
+//		System.out.println(((Employees) a).getSalary());
 		// double salary = s.employees.elementAt(3).calculateSalary(s.orders,
 		// s.customers, s.events);
+		s.firmReport();
 
 	}
 
