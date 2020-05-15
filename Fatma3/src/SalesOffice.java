@@ -213,13 +213,28 @@ public class SalesOffice {
 		}
 		return sumOfCustumers;
 	}
-
+	
 	public double getOnlineProportion() {
-		return 0;
+	   int onlineOrders = 0;
+	   for(int i = 0; i<this.orders.size(); i ++) {
+		   if(this.orders.elementAt(i) instanceof OnlineOrders) {
+			   onlineOrders++;
+		   }
+	   }
+		return (double)onlineOrders/this.orders.size();
 	}
 
 	public double getBalance() {
-		return 0;
+		double inComes = 0;
+		int outComes = 0;
+		 for(int i = 0; i<this.orders.size(); i ++) {
+			   inComes += this.orders.elementAt(i).getOrderPrice(this.events)*this.orders.elementAt(i).getNumOfTickets();
+		   }
+		 for(int j = 0; j<this.employees.size(); j++) {
+			 outComes += this.employees.elementAt(j).getSalary();
+		 }
+		
+		return (inComes - outComes);
 	}
 
 	public void firmReport() {
