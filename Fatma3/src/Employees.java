@@ -1,6 +1,6 @@
 import java.util.Vector;
 
-abstract class Employees implements Comparable <Employees> , Valueable {
+abstract class Employees implements Comparable<Employees>, Valueable {
 	private int id;
 	private String name;
 	private int age;
@@ -10,7 +10,7 @@ abstract class Employees implements Comparable <Employees> , Valueable {
 		this.id = id;
 		this.name = name;
 		this.age = age;
-		this.salary=0;
+		this.salary = 0;
 
 	}
 
@@ -29,17 +29,21 @@ abstract class Employees implements Comparable <Employees> , Valueable {
 	public double getSalary() {
 		return salary;
 	}
-	
-	public double setSalary(double amount) {
-		return salary +amount ;
-	}
-	
-	public int getEmpId() {
-		return id;
-	}
-	
-	abstract public void calculateSalary(Vector<OfflineOrders> orders,Vector <Customers> custumers,Vector<Events> events);
 
+	public double setSalary(double amount) {
+		salary += amount;
+		return salary;
+	}
+
+	public double getValue() {
+		return salary;
+	}
+
+	public int compareTo(Employees other) {
+
+		return (int) (this.getSalary() - other.getSalary());
+	}
+
+	abstract public void calculateSalary(Vector<Orders> orders, Vector<Customers> customers, Vector<Events> events);
 
 }
-

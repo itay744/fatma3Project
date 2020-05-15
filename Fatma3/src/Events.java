@@ -1,6 +1,6 @@
 import java.util.Vector;
 
-public class Events implements Comparable <Events> {
+public class Events implements Comparable <Events>, Valueable {
 	private String name;
 	private int id;
 	private double pricePerTicket;
@@ -34,6 +34,10 @@ public class Events implements Comparable <Events> {
 		return this.totalTickets;
 	}
 	
+	public double getValue() {
+		return pricePerTicket;
+	}
+	
 	public int countTotalTickets(Vector<Orders> orders) {
 		int count = 0;
 		for(int i = 0; i< orders.size(); i++) {
@@ -47,7 +51,7 @@ public class Events implements Comparable <Events> {
 
 	@Override
 	public int compareTo(Events other) {
-		return (int) (this.totalTickets - other.getTotalTickets());
+		return (int) (this.totalTickets - other.totalTickets);
 	}
 
 

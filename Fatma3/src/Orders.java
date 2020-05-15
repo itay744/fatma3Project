@@ -1,7 +1,7 @@
 
 import java.util.Vector;
 
-public class Orders implements Comparable<Orders> {
+public class Orders implements Comparable<Orders> , Valueable{
 	private int eventId;
 	private int customerId;
 	private int numberOfTickets;
@@ -11,18 +11,33 @@ public class Orders implements Comparable<Orders> {
 		this.customerId = customerId;
 		this.numberOfTickets = numberOfTickets;
 	}
+	
+	private double getEventPrice(Vector<Events> events) {
+		int price = 0;
+		for (int i = 0; i < events.size(); i++) {
+			if (this.getEventId() == events.elementAt(i).getId()) {
+				price += events.elementAt(i).getPricePerTicket();
+			}
+		}
+		return price;
+	}
 
 	public int getEventId() {
 		return eventId;
 	}
 
 	public int getCustomerAge(Vector<Customers> customers) {
+		int age = 0;
 		for (int i = 0; i < customers.size(); i++) {
 			if (this.customerId == customers.elementAt(i).getId()) {
-				return customers.elementAt(i).getAge();
+				age = customers.elementAt(i).getAge();
 			}
 		}
-		return 0;
+		return age;
+	}
+	
+	public double getValue() {
+		return numberOfTickets;
 	}
 
 	public int getCustomerId() {
@@ -33,19 +48,14 @@ public class Orders implements Comparable<Orders> {
 		return numberOfTickets;
 	}
 
-	public int getOrderPrice(Vector<Events> events) {
-		int price = 0;
-		for (int i = 0; i < events.size(); i++) {
-			if (this.getEventId() == events.elementAt(i).getId()) {
-				price += events.elementAt(i).getPricePerTicket() * numberOfTickets;
-			}
-		}
+	public double getOrderPrice(Vector<Events> events) {
+		double price = 0;
+		price = getEventPrice(events)* numberOfTickets;
 		return price;
 	}
 
-	@Override
 	public int compareTo(Orders other) {
-		return this.getNumOfTickets() - other.getNumOfTickets();
+		return this.numberOfTickets - other.numberOfTickets;
 	}
 
 }

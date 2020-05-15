@@ -11,19 +11,19 @@ public class SalesOffice {
 	public Vector<Orders> orders;
 	public Vector<Employees> employees;
 
-	public SalesOffice(String fileEvents, String fileEmployees, String fileCustumers, String fileTicketsSales) {
+	public SalesOffice(String fileEvents, String fileEmployees, String fileCustomers, String fileTicketsSales) {
 		customers = new Vector<Customers>();
 		events = new Vector<Events>();
 		orders = new Vector<Orders>();
 		employees = new Vector<Employees>();
-		readEventsFromFile(fileEvents);
-		readEmployeesFromFile(fileEmployees);
-		readCustumersFromFile(fileCustumers);
-		readOrdersFromFile(fileTicketsSales);
+		readOrdersFile(fileTicketsSales);
+		readEventsFile(fileEvents);
+		readCustomersFile(fileCustomers);
+		readEmployeesFile(fileEmployees);
 
 	}
 
-	private void readCustumersFromFile(String file) { // reads from the Customers file.
+	private void readCustomersFile(String file) { // reads from the Customers file.
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -33,7 +33,7 @@ public class SalesOffice {
 				String temp[] = line.split("\\t");
 				try {
 					this.customers.add(new Customers(Integer.parseInt(temp[0]), temp[1], Integer.parseInt(temp[2]),
-							temp[3].charAt(0), Integer.parseInt(temp[4]), this.orders, this.events));
+							temp[3].charAt(0), Integer.parseInt(temp[4]), orders, events));
 				} catch (WrongGenderInputException e) {
 					System.err.println("Wrong gender input, can be only m or f");
 					customers.remove(customers.lastElement());
@@ -53,7 +53,7 @@ public class SalesOffice {
 		}
 	}
 
-	private void readEventsFromFile(String file) { // reads from the Customers file.
+	private void readEventsFile(String file) { // reads from the Customers file.
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -62,8 +62,7 @@ public class SalesOffice {
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\\t");
 				try {
-					this.events.add(
-							new Events(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2]), this.orders));
+					this.events.add(new Events(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2]), orders));
 				} catch (NegativePriceException e) {
 					System.err.println("Price cannot be nagative");
 					events.remove(events.lastElement());
@@ -83,7 +82,7 @@ public class SalesOffice {
 		}
 	}
 
-	private void readOrdersFromFile(String file) { // reads from the Customers file.
+	private void readOrdersFile(String file) { // reads from the Customers file.
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -97,7 +96,7 @@ public class SalesOffice {
 							Integer.parseInt(temp[3]), temp[4]));
 				} else {
 					this.orders.add(new OfflineOrders(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]),
-							Integer.parseInt(temp[2]), Integer.parseInt(temp[3])));
+							Integer.parseInt(temp[3]), Integer.parseInt(temp[2])));
 
 				}
 
@@ -116,7 +115,7 @@ public class SalesOffice {
 		}
 	}
 
-	private void readEmployeesFromFile(String file) {
+	private void readEmployeesFile(String file) {
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -127,10 +126,10 @@ public class SalesOffice {
 				;
 				if (temp.length == 5) {
 					this.employees.add(new marketingWorkers(Integer.parseInt(temp[0]), temp[1],
-							Integer.parseInt(temp[2]), temp[4]));
+							Integer.parseInt(temp[2]), temp[4], orders, customers, events));
 				} else {
 					this.employees.add(new salesWorkers(Integer.parseInt(temp[0]), temp[1], Integer.parseInt(temp[2]),
-							Double.parseDouble((temp[3]))));
+							Double.parseDouble((temp[3])), orders, customers, events));
 				}
 
 			}
@@ -240,7 +239,7 @@ public class SalesOffice {
 		return 0;
 	}
 
-	public static Comparable<?> getMax(Vector<Comparable> comparable) {
+	public static Comparable<?> getMax(Vector<? extends Comparable> comparable) {
 		Comparable<?> max = comparable.elementAt(0);
 		for (int i = 1; i < comparable.size(); i++) {
 			if (comparable.elementAt(i).compareTo(max) > 0) {
@@ -269,25 +268,34 @@ public class SalesOffice {
 		}
 		return counter;
 	}
-	
+
 	public double getOnlineProportion(Vector<Orders> orders) {
-		double proportion = countOnlineOrders(orders)/countOrders(orders);
+		double proportion = countOnlineOrders(orders) / countOrders(orders);
 		return proportion;
+	}
+
+	public static double getAvgValue(Vector<? extends Valueable> value) {
+		double countElements = 0;
+		double totalValue = 0;
+		for (int i = 0; i < value.size(); i++) {
+			totalValue += value.elementAt(i).getValue();
+			countElements++;
+		}
+		return totalValue / countElements;
+
 	}
 
 	public static void main(String[] args) {
 		String fEvents = new String("Events.txt");
 		String fEmployees = new String("Employees.txt");
 		String fCustomers = new String("Customers.txt");
-		String fTickers = new String("Orders.txt");
-		SalesOffice s = new SalesOffice(fEvents, fEmployees, fCustomers, fTickers);
-		// s.print();
+		String fOrders = new String("Orders.txt");
+		SalesOffice s = new SalesOffice(fEvents, fEmployees, fCustomers, fOrders);
 
-		// SalesOffice SalesOffice = new SalesOffice("Events.txt", "Employees.txt" ,
-		// "Customers.txt","Orders.txt");
-		//s.printAgeReport(3);
-		System.out.println(s.getOnlineProportion(s.orders));
-		
+		Comparable a = getMax(s.employees);
+		System.out.println(((Employees) a).getSalary());
+		// double salary = s.employees.elementAt(3).calculateSalary(s.orders,
+		// s.customers, s.events);
 
 	}
 
