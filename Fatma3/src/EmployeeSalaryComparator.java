@@ -1,8 +1,8 @@
 import java.util.Comparator;
 
-public class EmployeeSalaryComparator implements Comparator {
-	public int compare(Object o1, Object o2){
-	    return (int)(((Employees)o1).getSalary() - ((Employees)o2).getSalary());
+public class EmployeeSalaryComparator <T extends Employees> implements Comparator <T> {
+	public int compare(T o1, T o2){
+	    return (int)(o1.getSalary() - o2.getSalary());
 	}
 
 }

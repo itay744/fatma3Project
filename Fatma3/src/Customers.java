@@ -1,3 +1,4 @@
+
 import java.util.Vector;
 
 public class Customers implements Comparable<Customers>{
@@ -6,7 +7,7 @@ public class Customers implements Comparable<Customers>{
 	private int age;
 	private char gender;
 	private int registeredByEmpId;
-	private double totalAmountOrders;
+	private double totalOrdersPrice;
 	private static final char MALE = 'm';
 	private static final char FEMALE = 'f';
 
@@ -20,11 +21,11 @@ public class Customers implements Comparable<Customers>{
 		}
 		this.gender = gender;
 		registeredByEmpId = empId;
-		totalAmountOrders = getAmountForAllOrders(orders,events);
+		totalOrdersPrice = getPriceForAllOrders(orders,events);
 	}
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public String getName() {
@@ -32,24 +33,24 @@ public class Customers implements Comparable<Customers>{
 	}
 
 	public int getAge() {
-		return this.age;
+		return age;
 	}
 
 	public int getGender() {
-		return this.gender;
+		return gender;
 	}
 
 	public int getRegisteredEmpId() {
-		return this.registeredByEmpId;
+		return registeredByEmpId;
 	}
 	
-	public double getAmountForAllOrders(Vector <Orders> orders,Vector <Events> events) {
+	public double getPriceForAllOrders(Vector <Orders> orders,Vector <Events> events) {
 		double totalPrice = 0;
 		for (int i = 0; i < orders.size(); i++) {
-			if (this.getId() == orders.elementAt(i).getSoldToId()) {
+			if (this.getId() == orders.elementAt(i).getCustomerId()) {
 				for (int j = 0; j < events.size(); j++) {
 					if(orders.elementAt(i).getEventId() ==  events.elementAt(j).getId()) {
-						totalPrice = totalPrice + orders.elementAt(i).getOrderPrice(events)* orders.elementAt(i).getNumberOfTickets();
+						totalPrice = totalPrice + orders.elementAt(i).getOrderPrice(events)* orders.elementAt(i).getNumOfTickets();
 					}
 				}
 				
@@ -61,7 +62,7 @@ public class Customers implements Comparable<Customers>{
 	public int getTickets(Vector <Orders> orders) {
 		int counter=0;
 		 for (int i = 0 ; i < orders.size() ; i++) {
-	            if (this.getId() == (orders.elementAt(i).getSoldToId()) ) {
+	            if (this.getId() == (orders.elementAt(i).getCustomerId()) ) {
 	             counter++;
 	            }
 	          }
@@ -70,13 +71,13 @@ public class Customers implements Comparable<Customers>{
 
 
 	@Override
-	public int compareTo(Customers o) {
+	public int compareTo(Customers other) {
 	
-		return (int) (this.totalAmountOrders - o.getTotalAmountOrders());
+		return (int) (this.totalOrdersPrice - other.getTotalOrdersPrice());
 	}
 
-	public double getTotalAmountOrders() {
-		return totalAmountOrders;
+	public double getTotalOrdersPrice() {
+		return totalOrdersPrice;
 	}
 
 
