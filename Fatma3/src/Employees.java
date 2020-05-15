@@ -15,7 +15,7 @@ abstract class Employees implements Comparable<Employees>, Valueable {
 	}
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public String getName() {
@@ -23,12 +23,12 @@ abstract class Employees implements Comparable<Employees>, Valueable {
 	}
 
 	public int getAge() {
-		return this.age;
+		return age;
 	}
 
-	public double getSalary() {
-		return salary;
-	}
+//	public double getSalary() {
+//		return salary;
+//	}
 
 	public double setSalary(double amount) {
 		salary += amount;
@@ -41,7 +41,7 @@ abstract class Employees implements Comparable<Employees>, Valueable {
 
 	public int compareTo(Employees other) {
 
-		return (int) (this.getSalary() - other.getSalary());
+		return (int) (this.salary - other.salary);
 	}
 
 	abstract public void calculateSalary(Vector<Orders> orders, Vector<Customers> customers, Vector<Events> events);

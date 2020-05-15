@@ -5,7 +5,8 @@ public class marketingWorkers extends Employees {
 	final int signClientBonus = 2;
 	final double bonusRate = 0.01;
 
-	public marketingWorkers(int id, String name, int Age, String phone, Vector <Orders> o,Vector <Customers> c,Vector <Events> e) {
+	public marketingWorkers(int id, String name, int Age, String phone, Vector<Orders> o, Vector<Customers> c,
+			Vector<Events> e) {
 		super(id, name, Age);
 		this.phone = phone;
 		calculateSalary(o, c, e);

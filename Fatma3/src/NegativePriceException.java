@@ -1,6 +1,5 @@
 import java.io.IOException;
 
-public class NegativePriceException extends IOException{
-
+public class NegativePriceException extends IOException {
 
 }

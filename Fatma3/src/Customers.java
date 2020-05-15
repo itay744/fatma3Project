@@ -51,6 +51,10 @@ public class Customers implements Comparable<Customers>, Valueable {
 		return totalOrdersPrice;
 	}
 
+	public int getTickets() {
+		return totalTickets;
+	}
+
 	public double calculatePriceForOrders(Vector<Orders> orders, Vector<Events> events) {
 		double totalPrice = 0;
 		for (int i = 0; i < orders.size(); i++) {
@@ -70,11 +74,10 @@ public class Customers implements Comparable<Customers>, Valueable {
 		}
 		return counter;
 	}
-	
+
 	@Override
 	public int compareTo(Customers other) {
-		return this.totalTickets- other.totalTickets;
+		return this.totalTickets - other.totalTickets;
 	}
-
 
 }

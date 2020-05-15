@@ -1,7 +1,7 @@
 
 import java.util.Vector;
 
-public class Orders implements Comparable<Orders> , Valueable{
+public class Orders implements Comparable<Orders>, Valueable {
 	private int eventId;
 	private int customerId;
 	private int numberOfTickets;
@@ -11,12 +11,12 @@ public class Orders implements Comparable<Orders> , Valueable{
 		this.customerId = customerId;
 		this.numberOfTickets = numberOfTickets;
 	}
-	
+
 	private double getEventPrice(Vector<Events> events) {
 		int price = 0;
 		for (int i = 0; i < events.size(); i++) {
-			if (this.getEventId() == events.elementAt(i).getId()) {
-				price += events.elementAt(i).getPricePerTicket();
+			if (this.getEventId() == events.elementAt(i).getEventId()) {
+				price += events.elementAt(i).getValue();
 			}
 		}
 		return price;
@@ -35,7 +35,7 @@ public class Orders implements Comparable<Orders> , Valueable{
 		}
 		return age;
 	}
-	
+
 	public double getValue() {
 		return numberOfTickets;
 	}
@@ -44,13 +44,13 @@ public class Orders implements Comparable<Orders> , Valueable{
 		return customerId;
 	}
 
-	public int getNumOfTickets() {
-		return numberOfTickets;
-	}
+//	public int getNumOfTickets() {
+//		return numberOfTickets;
+//	}
 
 	public double getOrderPrice(Vector<Events> events) {
 		double price = 0;
-		price = getEventPrice(events)* numberOfTickets;
+		price = getEventPrice(events) * numberOfTickets;
 		return price;
 	}
 

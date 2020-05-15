@@ -149,11 +149,11 @@ public class SalesOffice {
 	}
 
 	public void printAgeReport(int eventID) {
-		int[] customerPerAge = customersAgesInEvent(eventID);
-		int customerInEvent = totalCustomersInEvent(eventID);
+		int[] customersAges = customersAgesInEvent(eventID);
+		int customersInEvent = totalCustomersInEvent(eventID);
 		double[] ages = new double[6];
 		for (int i = 0; i < ages.length; i++) {
-			ages[i] = ((double) customerPerAge[i] / customerInEvent) * 100;
+			ages[i] = ((double) customersAges[i] / customersInEvent) * 100;
 		}
 		printReport(ages);
 	}
@@ -227,13 +227,16 @@ public class SalesOffice {
 
 	public double getBalance() {
 		double revenue = 0;
-		int expenses = 0;
+		double expenses = 0;
 		for (int i = 0; i < orders.size(); i++) {
 			revenue += orders.elementAt(i).getOrderPrice(events);
 		}
 		for (int i = 0; i < employees.size(); i++) {
-			expenses += employees.elementAt(i).getSalary();
+			expenses += employees.elementAt(i).getValue();
 		}
+		System.out.println("revenue: " + revenue);
+		System.out.println("expenses: " + expenses);
+		System.out.print("profit: ");
 
 		return revenue - expenses;
 	}
@@ -245,7 +248,8 @@ public class SalesOffice {
 		Collections.sort(employees);
 		Collections.reverse(employees);
 		for (int i = 0; i < employees.size(); i++) {
-			System.out.println("Name: " + employees.elementAt(i).getName() + " ; age: " + employees.elementAt(i).getAge());
+			System.out.println(
+					"Name: " + employees.elementAt(i).getName() + " ; age: " + employees.elementAt(i).getAge());
 		}
 		System.out.println("---------------");
 		Collections.sort(events);
@@ -259,8 +263,8 @@ public class SalesOffice {
 		Collections.reverse(customers);
 		System.out.println("Customer list:");
 		for (int i = 0; i < customers.size(); i++) {
-			System.out.println("Name: " + customers.elementAt(i).getName() + " ; age: " + customers.elementAt(i).getAge()
-					+ " ; Gender: " + customers.elementAt(i).getGender());
+			System.out.println("Name: " + customers.elementAt(i).getName() + " ; age: "
+					+ customers.elementAt(i).getAge() + " ; Gender: " + customers.elementAt(i).getGender());
 		}
 	}
 
@@ -321,7 +325,11 @@ public class SalesOffice {
 //		System.out.println(((Employees) a).getSalary());
 		// double salary = s.employees.elementAt(3).calculateSalary(s.orders,
 		// s.customers, s.events);
-		s.firmReport();
+		// s.firmReport();
+//		Comparable c = getMax(s.events);
+//		System.out.println(((Events)c).getTotalTickets());
+		// System.out.println(s.getBalance());
+		System.out.println(getAvgValue(s.orders));
 
 	}
 
