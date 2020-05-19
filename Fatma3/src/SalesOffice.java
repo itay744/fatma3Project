@@ -7,10 +7,10 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class SalesOffice {
-	public Vector<Customers> customers;
-	public Vector<Events> events;
-	public Vector<Orders> orders;
-	public Vector<Employees> employees;
+	private Vector<Customers> customers;
+	private Vector<Events> events;
+	private Vector<Orders> orders;
+	private Vector<Employees> employees;
 
 	public SalesOffice(String fileEvents, String fileEmployees, String fileCustomers, String fileTicketsSales) {
 		customers = new Vector<Customers>();
@@ -36,11 +36,10 @@ public class SalesOffice {
 					this.customers.add(new Customers(Integer.parseInt(temp[0]), temp[1], Integer.parseInt(temp[2]),
 							temp[3].charAt(0), Integer.parseInt(temp[4]), orders, events));
 				} catch (WrongGenderInputException e) {
-					System.err.println("Wrong gender input, can be only m or f");
-					customers.remove(customers.lastElement());
+					System.err.println("Wrong gender input, can be only 'm' or 'f' ");
+					
 				}
 			}
-			customers.remove(customers.firstElement());// removing the titles string from the vector
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -66,10 +65,9 @@ public class SalesOffice {
 					this.events.add(new Events(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2]), orders));
 				} catch (NegativePriceException e) {
 					System.err.println("Price cannot be nagative");
-					events.remove(events.lastElement());
 				}
 			}
-			events.remove(events.firstElement());// removing the titles string from the vector
+
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -102,7 +100,7 @@ public class SalesOffice {
 				}
 
 			}
-			orders.remove(orders.firstElement());// remove titles from vector
+
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -124,7 +122,7 @@ public class SalesOffice {
 			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\\t");
-				;
+				
 				if (temp.length == 5) {
 					this.employees.add(new marketingWorkers(Integer.parseInt(temp[0]), temp[1],
 							Integer.parseInt(temp[2]), temp[4], orders, customers, events));
@@ -134,7 +132,7 @@ public class SalesOffice {
 				}
 
 			}
-			employees.remove(employees.firstElement());// remove titles from vector
+
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -181,11 +179,11 @@ public class SalesOffice {
 						&& orders.elementAt(i).getCustomerAge(customers) < 25) {
 					secondAge++;
 				}
-				if (orders.elementAt(i).getCustomerAge(customers) > 23
+				if (orders.elementAt(i).getCustomerAge(customers) > 24
 						&& orders.elementAt(i).getCustomerAge(customers) < 36) {
 					thirdAge++;
 				}
-				if (orders.elementAt(i).getCustomerAge(customers) > 34
+				if (orders.elementAt(i).getCustomerAge(customers) > 35
 						&& orders.elementAt(i).getCustomerAge(customers) < 51) {
 					fourthAge++;
 				}
@@ -232,7 +230,7 @@ public class SalesOffice {
 			revenue += orders.elementAt(i).getOrderPrice(events);
 		}
 		for (int i = 0; i < employees.size(); i++) {
-			expenses += employees.elementAt(i).getValue();
+			expenses += employees.elementAt(i).getSalary();
 		}
 		System.out.println("revenue: " + revenue);
 		System.out.println("expenses: " + expenses);
@@ -289,13 +287,9 @@ public class SalesOffice {
 		return counter;
 	}
 
-	private double countOrders() {
-		double counter = 0;
-		for (int i = 0; i < orders.size(); i++) {
-			counter++;
-
-		}
-		return counter;
+	private double countOrders() {	
+		return orders.size()+1;
+		
 	}
 
 	public double getOnlineProportion() {
@@ -320,16 +314,20 @@ public class SalesOffice {
 		String fCustomers = new String("Customers.txt");
 		String fOrders = new String("Orders.txt");
 		SalesOffice s = new SalesOffice(fEvents, fEmployees, fCustomers, fOrders);
-//
+		s.printAgeReport(1);
+		
+		
 //		Comparable a = getMax(s.employees);
-//		System.out.println(((Employees) a).getSalary());
-		// double salary = s.employees.elementAt(3).calculateSalary(s.orders,
-		// s.customers, s.events);
-		// s.firmReport();
-//		Comparable c = getMax(s.events);
+//		s.firmReport();
+		//System.out.println(s.events.elementAt(0).getName());
+		//Comparable c = getMax(s.events);
+     	//System.out.println(((Events)c).getTotalTickets());
+//		System.out.println(s.orders.elementAt(144).getEventId());
+     	
 //		System.out.println(((Events)c).getTotalTickets());
-		// System.out.println(s.getBalance());
-		System.out.println(getAvgValue(s.orders));
+		System.out.println(s.getBalance());
+//		System.out.println(getAvgValue(s.orders));
+//		s.firmReport();
 
 	}
 

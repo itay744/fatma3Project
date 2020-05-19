@@ -7,7 +7,7 @@ public class salesWorkers extends Employees {
 			Vector<Events> e) {
 		super(id, Name, Age);
 		this.saleRate = saleRate;
-		calculateSalary(o, c, e);
+		this.salary = calculateSalary(o, c, e);
 
 	}
 
@@ -15,20 +15,27 @@ public class salesWorkers extends Employees {
 		return saleRate;
 	}
 
-	public void calculateSalary(Vector<Orders> orders, Vector<Customers> custumers, Vector<Events> events) {
-		setSalary(calculateFutureBonus(orders, events));
+	public double calculateSalary(Vector<Orders> orders, Vector<Customers> custumers, Vector<Events> events) {
+		return (calculateFutureBonus(orders, events));
 
 	}
 
-	public double calculateFutureBonus(Vector<? extends Orders> orders, Vector<Events> events) {
-		double salary = 0;
+	private double calculateFutureBonus(Vector<Orders> orders, Vector<Events> events) {
+		double Bonus = 0;
 		for (int i = 0; i < orders.size(); i++) {
 			if (orders.elementAt(i) instanceof OfflineOrders
 					&& this.getId() == ((OfflineOrders) orders.elementAt(i)).getSellerId()) {
-				salary += orders.elementAt(i).getOrderPrice(events) * saleRate;
+				Bonus += orders.elementAt(i).getOrderPrice(events)*saleRate ;
 			}
 		}
-		return salary;
+		return Bonus;
 	}
+
+	@Override
+	public double getValue() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }
