@@ -5,19 +5,22 @@ public class Orders implements Comparable<Orders>, Valueable {
 	protected int eventId;
 	protected int customerId;
 	protected int numberOfTickets;
+	protected double orderPrice;
 
-	public Orders(int eventId, int customerId, int numberOfTickets) {
+	public Orders(int eventId, int customerId, int numberOfTickets,Vector<Events> events) {
 		this.eventId = eventId;
 		this.customerId = customerId;
-		this.numberOfTickets = numberOfTickets;
+		this.numberOfTickets = numberOfTickets;	
+		orderPrice = getOrderPrice(events);
+		
 	}
 
 	private double getEventPrice(Vector<Events> events) {
 		double price = 0;
 		for (int i = 0; i < events.size(); i++) {
-			if (this.eventId == events.elementAt(i).getEventId()) {
+			if (eventId == events.elementAt(i).getEventId()) {
 				price = events.elementAt(i).getPricePerTicket();
-				
+
 			}
 		}
 		return price;
@@ -30,7 +33,7 @@ public class Orders implements Comparable<Orders>, Valueable {
 	public int getCustomerAge(Vector<Customers> customers) {
 		int age = 0;
 		for (int i = 0; i < customers.size(); i++) {
-			if (this.customerId == customers.elementAt(i).getId()) {
+			if (customerId == customers.elementAt(i).getId()) {
 				age = customers.elementAt(i).getAge();
 			}
 		}
@@ -38,7 +41,7 @@ public class Orders implements Comparable<Orders>, Valueable {
 	}
 
 	public double getValue() {
-		return numberOfTickets;
+		return orderPrice;
 	}
 
 	public int getCustomerId() {
@@ -47,15 +50,12 @@ public class Orders implements Comparable<Orders>, Valueable {
 
 	public double getOrderPrice(Vector<Events> events) {
 		double price = 0;
-		price = getEventPrice(events)*numberOfTickets;
+		price = getEventPrice(events) * numberOfTickets;
 		return price;
 	}
 
 	public int compareTo(Orders other) {
 		return this.numberOfTickets - other.numberOfTickets;
 	}
-	
-	public int getNumberOfTickets() {
-		return numberOfTickets;
-	}
+
 }

@@ -14,14 +14,14 @@ public class marketingWorkers extends Employees {
 	}
 
 	public double calculateSalary(Vector<Orders> orders, Vector<Customers> customers, Vector<Events> events) {
-		return (countEmpClients(customers)*signClientBonus)+calculateFutureBonus(customers);
+		return (countEmpClients(customers) * signClientBonus + calculateFutureBonus(customers));
 
 	}
 
 	private double calculateFutureBonus(Vector<Customers> customers) {
 		int bonus = 0;
 		for (int i = 0; i < customers.size(); i++) {
-			if (this.id == customers.elementAt(i).getRegisteredEmpId()) {
+			if (id == customers.elementAt(i).getRegisteredEmpId()) {
 				bonus += customers.elementAt(i).getValue();
 			}
 		}
@@ -31,17 +31,11 @@ public class marketingWorkers extends Employees {
 	private int countEmpClients(Vector<Customers> customers) {
 		int counter = 0;
 		for (int i = 0; i < customers.size(); i++) {
-			if (this.id == customers.elementAt(i).getRegisteredEmpId()) {
+			if (id == customers.elementAt(i).getRegisteredEmpId()) {
 				counter++;
 			}
 		}
 		return counter;
-	}
-
-	@Override
-	public double getValue() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }

@@ -27,8 +27,8 @@ abstract class Employees implements Comparable<Employees>, Valueable {
 	}
 
 	
-	public double getSalary() {
-		return this.salary;
+	public double getValue() {
+		return salary;
 	}
 
 

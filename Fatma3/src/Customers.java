@@ -19,11 +19,12 @@ public class Customers implements Comparable<Customers>, Valueable {
 		this.name = name;
 		this.age = age;
 		if (gender != FEMALE && gender != MALE) {
-			throw new WrongGenderInputException();
+			gender = 'f';
+//			throw new WrongGenderInputException();
 		}
 		this.gender = gender;
 		registeredByEmpId = empId;
-		totalOrdersPrice = calculatePriceForOrders(orders, events);
+		totalOrdersPrice = calculateOrdersPrice(orders, events);
 		totalTickets = totalTickets(orders);
 
 	}
@@ -59,25 +60,23 @@ public class Customers implements Comparable<Customers>, Valueable {
 	private int totalTickets(Vector<Orders> orders) {
 		int numOfTickets = 0;
 		for (int i = 0; i < orders.size(); i++) {
-			if (this.getId() == orders.elementAt(i).getCustomerId()) {
-				numOfTickets+= orders.elementAt(i).getNumberOfTickets();
+			if (getId() == orders.elementAt(i).getCustomerId()) {
+				numOfTickets+= orders.elementAt(i).getValue();// gets the number of tickets from order
 			}
 		}
 		return numOfTickets;
 	}
 
-	private double calculatePriceForOrders(Vector<Orders> orders, Vector<Events> events) {
+	private double calculateOrdersPrice(Vector<Orders> orders, Vector<Events> events) {
 		double totalPrice = 0;
 		for (int i = 0; i < orders.size(); i++) {
-			if (this.getId() == orders.elementAt(i).getCustomerId()) {
-				totalPrice += orders.elementAt(i).getOrderPrice(events)*orders.elementAt(i).getNumberOfTickets();
+			if (getId() == orders.elementAt(i).getCustomerId()) {
+				totalPrice += orders.elementAt(i).getOrderPrice(events);
 			}
 		}
 		return totalPrice;
 	}
 
-
-	@Override
 	public int compareTo(Customers other) {
 		return this.totalTickets - other.totalTickets;
 	}

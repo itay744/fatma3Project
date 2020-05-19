@@ -33,11 +33,11 @@ public class SalesOffice {
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\\t");
 				try {
-					this.customers.add(new Customers(Integer.parseInt(temp[0]), temp[1], Integer.parseInt(temp[2]),
+					customers.add(new Customers(Integer.parseInt(temp[0]), temp[1], Integer.parseInt(temp[2]),
 							temp[3].charAt(0), Integer.parseInt(temp[4]), orders, events));
 				} catch (WrongGenderInputException e) {
 					System.err.println("Wrong gender input, can be only 'm' or 'f' ");
-					
+
 				}
 			}
 
@@ -62,12 +62,11 @@ public class SalesOffice {
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\\t");
 				try {
-					this.events.add(new Events(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2]), orders));
+					events.add(new Events(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2]), orders));
 				} catch (NegativePriceException e) {
 					System.err.println("Price cannot be nagative");
 				}
 			}
-
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -91,16 +90,15 @@ public class SalesOffice {
 				String temp[] = line.split("\\t");
 				if (temp.length == 5) {
 
-					this.orders.add(new OnlineOrders(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]),
-							Integer.parseInt(temp[3]), temp[4]));
+					orders.add(new OnlineOrders(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]),
+							Integer.parseInt(temp[3]), temp[4], events));
 				} else {
-					this.orders.add(new OfflineOrders(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]),
-							Integer.parseInt(temp[3]), Integer.parseInt(temp[2])));
+					orders.add(new OfflineOrders(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]),
+							Integer.parseInt(temp[3]), Integer.parseInt(temp[2]), events));
 
 				}
 
 			}
-
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -122,17 +120,16 @@ public class SalesOffice {
 			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\\t");
-				
+
 				if (temp.length == 5) {
-					this.employees.add(new marketingWorkers(Integer.parseInt(temp[0]), temp[1],
+					employees.add(new marketingWorkers(Integer.parseInt(temp[0]), temp[1],
 							Integer.parseInt(temp[2]), temp[4], orders, customers, events));
 				} else {
-					this.employees.add(new salesWorkers(Integer.parseInt(temp[0]), temp[1], Integer.parseInt(temp[2]),
+					employees.add(new salesWorkers(Integer.parseInt(temp[0]), temp[1], Integer.parseInt(temp[2]),
 							Double.parseDouble((temp[3])), orders, customers, events));
 				}
 
 			}
-
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -148,16 +145,16 @@ public class SalesOffice {
 
 	public void printAgeReport(int eventID) {
 		int[] customersAges = customersAgesInEvent(eventID);
-		int customersInEvent = totalCustomersInEvent(eventID);
+		int totalCustomers = totalCustomersInEvent(eventID);
 		double[] ages = new double[6];
 		for (int i = 0; i < ages.length; i++) {
-			ages[i] = ((double) customersAges[i] / customersInEvent) * 100;
+			ages[i] = ((double) customersAges[i] / totalCustomers) * 100;
 		}
-		printReport(ages);
+		printReport(ages, eventID);
 	}
 
-	private void printReport(double[] ages) {
-		System.out.println("Event name:");
+	private void printReport(double[] ages, int event) {
+		System.out.println("Event name:"+ events.elementAt(event).getName());
 		System.out.println("0-18: " + (int) (ages[0]) + "%");
 		System.out.println("18-24: " + (int) (ages[1]) + "%");
 		System.out.println("25-35: " + (int) (ages[2]) + "%");
@@ -166,32 +163,28 @@ public class SalesOffice {
 		System.out.println("71+: " + (int) (ages[5]) + "%");
 	}
 
-	private int[] customersAgesInEvent(int eventID) {
+	private int[] customersAgesInEvent(int eventId) {
 		int firstAge = 0, secondAge = 0, thirdAge = 0, fourthAge = 0, fifthAge = 0, sixAge = 0;
-		for (int i = 0; i < this.orders.size(); i++) {
-			if (this.orders.elementAt(i).getEventId() == eventID) {
+		for (int i = 0; i < orders.size(); i++) {
+			int customerAge = orders.elementAt(i).getCustomerAge(customers);
+			if (orders.elementAt(i).getEventId() == eventId) {
 
-				if (orders.elementAt(i).getCustomerAge(customers) > 0
-						&& orders.elementAt(i).getCustomerAge(customers) < 19) {
+				if (customerAge > 0 && customerAge < 19) {
 					firstAge++;
 				}
-				if (orders.elementAt(i).getCustomerAge(customers) > 18
-						&& orders.elementAt(i).getCustomerAge(customers) < 25) {
+				if (customerAge > 18 && customerAge < 25) {
 					secondAge++;
 				}
-				if (orders.elementAt(i).getCustomerAge(customers) > 24
-						&& orders.elementAt(i).getCustomerAge(customers) < 36) {
+				if (customerAge > 24 && customerAge < 36) {
 					thirdAge++;
 				}
-				if (orders.elementAt(i).getCustomerAge(customers) > 35
-						&& orders.elementAt(i).getCustomerAge(customers) < 51) {
+				if (customerAge > 35 && customerAge < 51) {
 					fourthAge++;
 				}
-				if (orders.elementAt(i).getCustomerAge(customers) > 50
-						&& orders.elementAt(i).getCustomerAge(customers) < 71) {
+				if (customerAge > 50 && customerAge < 71) {
 					fifthAge++;
 				}
-				if (orders.elementAt(i).getCustomerAge(customers) > 70) {
+				if (customerAge > 70) {
 					sixAge++;
 				}
 
@@ -205,8 +198,8 @@ public class SalesOffice {
 
 	private int totalCustomersInEvent(int eventID) {
 		int sumOfCustumers = 0;
-		for (int i = 0; i < this.orders.size(); i++) {
-			if (this.orders.elementAt(i).getEventId() == eventID) {
+		for (int i = 0; i < orders.size(); i++) {
+			if (orders.elementAt(i).getEventId() == eventID) {
 				sumOfCustumers++;
 			}
 		}
@@ -226,15 +219,17 @@ public class SalesOffice {
 	public double getBalance() {
 		double revenue = 0;
 		double expenses = 0;
+		double profit = 0;
 		for (int i = 0; i < orders.size(); i++) {
 			revenue += orders.elementAt(i).getOrderPrice(events);
 		}
 		for (int i = 0; i < employees.size(); i++) {
-			expenses += employees.elementAt(i).getSalary();
+			expenses += employees.elementAt(i).getValue();
 		}
 		System.out.println("revenue: " + revenue);
 		System.out.println("expenses: " + expenses);
-		System.out.print("profit: ");
+		profit = revenue - expenses;
+		System.out.print("profit: "+ profit);
 
 		return revenue - expenses;
 	}
@@ -245,10 +240,8 @@ public class SalesOffice {
 		System.out.println("Employees list:");
 		Collections.sort(employees);
 		Collections.reverse(employees);
-		for (int i = 0; i < employees.size(); i++) {
-			System.out.println(
-					"Name: " + employees.elementAt(i).getName() + " ; age: " + employees.elementAt(i).getAge());
-		}
+		for (Employees emp : employees)
+			System.out.println("Name: " + emp.getName() + " ; age: " + emp.getAge());
 		System.out.println("---------------");
 		Collections.sort(events);
 		Collections.reverse(events);
@@ -287,9 +280,9 @@ public class SalesOffice {
 		return counter;
 	}
 
-	private double countOrders() {	
-		return orders.size()+1;
-		
+	private double countOrders() {
+		return orders.size();
+
 	}
 
 	public double getOnlineProportion() {
@@ -314,19 +307,21 @@ public class SalesOffice {
 		String fCustomers = new String("Customers.txt");
 		String fOrders = new String("Orders.txt");
 		SalesOffice s = new SalesOffice(fEvents, fEmployees, fCustomers, fOrders);
-		s.printAgeReport(1);
-		
-		
+	//	s.printAgeReport(1);
+//		//System.out.println(s.getBalance());
+//		s.getOnlineProportion();
+//		s.getBalance();
+	//	s.firmReport();
 //		Comparable a = getMax(s.employees);
 //		s.firmReport();
-		//System.out.println(s.events.elementAt(0).getName());
-		//Comparable c = getMax(s.events);
-     	//System.out.println(((Events)c).getTotalTickets());
+//		// System.out.println(s.events.elementAt(0).getName());
+//		 Comparable c = getMax(s.orders);
+//		 System.out.println(((Orders)c).getEventId());
 //		System.out.println(s.orders.elementAt(144).getEventId());
-     	
+
 //		System.out.println(((Events)c).getTotalTickets());
-		System.out.println(s.getBalance());
-//		System.out.println(getAvgValue(s.orders));
+		//System.out.println(s.getBalance());
+		System.out.println(getAvgValue(s.orders));
 //		s.firmReport();
 
 	}

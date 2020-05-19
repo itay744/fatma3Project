@@ -52,10 +52,10 @@ public class Events implements Comparable<Events>, Valueable {
 		
 	}
 
-	@Override
+
 	public double getValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return pricePerTicket;
 	}
 
 }
