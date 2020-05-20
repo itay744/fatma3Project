@@ -9,7 +9,7 @@ public class marketingWorkers extends Employees {
 			Vector<Events> e) {
 		super(id, name, Age);
 		this.phone = phone;
-		this.salary = calculateSalary(o, c, e);
+		salary = calculateSalary(o, c, e);
 
 	}
 
@@ -20,9 +20,9 @@ public class marketingWorkers extends Employees {
 
 	private double calculateFutureBonus(Vector<Customers> customers) {
 		int bonus = 0;
-		for (int i = 0; i < customers.size(); i++) {
-			if (id == customers.elementAt(i).getRegisteredEmpId()) {
-				bonus += customers.elementAt(i).getValue();
+		for (Customers customer: customers) {
+			if (id == customer.getRegisteredEmpId()) {
+				bonus += customer.getValue();
 			}
 		}
 		return bonus * bonusRate;
@@ -30,8 +30,8 @@ public class marketingWorkers extends Employees {
 
 	private int countEmpClients(Vector<Customers> customers) {
 		int counter = 0;
-		for (int i = 0; i < customers.size(); i++) {
-			if (id == customers.elementAt(i).getRegisteredEmpId()) {
+		for (Customers customer: customers) {
+			if (id == customer.getRegisteredEmpId()) {
 				counter++;
 			}
 		}

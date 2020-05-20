@@ -17,10 +17,9 @@ public class salesWorkers extends Employees {
 
 	protected double calculateSalary(Vector<Orders> orders, Vector<Customers> custumers, Vector<Events> events) {
 		double Bonus = 0;
-		for (int i = 0; i < orders.size(); i++) {
-			if (orders.elementAt(i) instanceof OfflineOrders
-					&& getId() == ((OfflineOrders) orders.elementAt(i)).getSellerId()) {
-				Bonus += orders.elementAt(i).getOrderPrice(events);
+		for (Orders order: orders) {
+			if (order instanceof OfflineOrders && getId() == ((OfflineOrders) order).getSellerId()) {
+				Bonus += order.getOrderPrice(events);
 			}
 		}
 		return Bonus * saleRate;

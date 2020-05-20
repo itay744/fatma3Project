@@ -37,9 +37,9 @@ public class Events implements Comparable<Events>, Valueable {
 
 	private int countTotalTickets(Vector<Orders> orders) {
 		int count = 0;
-		for (int i = 0; i < orders.size(); i++) {
-			if (orders.elementAt(i).getEventId() == eventId) {
-				count += orders.elementAt(i).getValue();
+		for (Orders order : orders) {
+			if (order.getEventId() == eventId) {
+				count += order.getValue();
 			}
 		}
 		return count;

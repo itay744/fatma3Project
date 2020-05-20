@@ -165,9 +165,9 @@ public class SalesOffice {
 
 	private int[] customersAgesInEvent(int eventId) {
 		int firstAge = 0, secondAge = 0, thirdAge = 0, fourthAge = 0, fifthAge = 0, sixAge = 0;
-		for (int i = 0; i < orders.size(); i++) {
-			int customerAge = orders.elementAt(i).getCustomerAge(customers);
-			if (orders.elementAt(i).getEventId() == eventId) {
+		for (Orders order : orders) {
+			int customerAge = order.getCustomerAge(customers);
+			if (order.getEventId() == eventId) {
 
 				if (customerAge > 0 && customerAge < 19) {
 					firstAge++;
@@ -198,8 +198,8 @@ public class SalesOffice {
 
 	private int totalCustomersInEvent(int eventID) {
 		int sumOfCustumers = 0;
-		for (int i = 0; i < orders.size(); i++) {
-			if (orders.elementAt(i).getEventId() == eventID) {
+		for (Orders order : orders) {
+			if (order.getEventId() == eventID) {
 				sumOfCustumers++;
 			}
 		}
@@ -208,8 +208,8 @@ public class SalesOffice {
 
 	public double getOnlineProportion2() {
 		int onlineOrders = 0;
-		for (int i = 0; i < this.orders.size(); i++) {
-			if (this.orders.elementAt(i) instanceof OnlineOrders) {
+		for (int i = 0; i < orders.size(); i++) {
+			if (orders.elementAt(i) instanceof OnlineOrders) {
 				onlineOrders++;
 			}
 		}
@@ -220,11 +220,11 @@ public class SalesOffice {
 		double revenue = 0;
 		double expenses = 0;
 		double profit = 0;
-		for (int i = 0; i < orders.size(); i++) {
-			revenue += orders.elementAt(i).getOrderPrice(events);
+		for (Orders order: orders) {
+			revenue += order.getOrderPrice(events);
 		}
-		for (int i = 0; i < employees.size(); i++) {
-			expenses += employees.elementAt(i).getValue();
+		for (Employees emp : employees) {
+			expenses += emp.getValue();
 		}
 		System.out.println("revenue: " + revenue);
 		System.out.println("expenses: " + expenses);
@@ -240,22 +240,23 @@ public class SalesOffice {
 		System.out.println("Employees list:");
 		Collections.sort(employees);
 		Collections.reverse(employees);
-		for (Employees emp : employees)
+		for (Employees emp : employees) {
 			System.out.println("Name: " + emp.getName() + " ; age: " + emp.getAge());
-		System.out.println("---------------");
+		}
+			System.out.println("---------------");
 		Collections.sort(events);
 		Collections.reverse(events);
 		System.out.println("Event list:");
-		for (int i = 0; i < events.size(); i++) {
-			System.out.println("Name: " + events.elementAt(i).getName());
+		for (Events event : events)  {
+			System.out.println("Name: " + event.getName());
 		}
 		System.out.println("---------------");
 		Collections.sort(customers);
 		Collections.reverse(customers);
 		System.out.println("Customer list:");
-		for (int i = 0; i < customers.size(); i++) {
-			System.out.println("Name: " + customers.elementAt(i).getName() + " ; age: "
-					+ customers.elementAt(i).getAge() + " ; Gender: " + customers.elementAt(i).getGender());
+		for (Customers customer : customers)  {
+			System.out.println("Name: " + customer.getName() + " ; age: "
+					+ customer.getAge() + " ; Gender: " + customer.getGender());
 		}
 	}
 
@@ -321,8 +322,8 @@ public class SalesOffice {
 
 //		System.out.println(((Events)c).getTotalTickets());
 		//System.out.println(s.getBalance());
-		System.out.println(getAvgValue(s.orders));
-//		s.firmReport();
+	//	System.out.println(getAvgValue(s.orders));
+//	s.firmReport();
 
 	}
 

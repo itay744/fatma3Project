@@ -17,9 +17,9 @@ public class Orders implements Comparable<Orders>, Valueable {
 
 	private double getEventPrice(Vector<Events> events) {
 		double price = 0;
-		for (int i = 0; i < events.size(); i++) {
-			if (eventId == events.elementAt(i).getEventId()) {
-				price = events.elementAt(i).getPricePerTicket();
+		for (Events event : events) {
+			if (eventId == event.getEventId()) {
+				price = event.getPricePerTicket();
 
 			}
 		}
@@ -32,9 +32,9 @@ public class Orders implements Comparable<Orders>, Valueable {
 
 	public int getCustomerAge(Vector<Customers> customers) {
 		int age = 0;
-		for (int i = 0; i < customers.size(); i++) {
-			if (customerId == customers.elementAt(i).getId()) {
-				age = customers.elementAt(i).getAge();
+		for (Customers customer: customers) {
+			if (customerId == customer.getId()) {
+				age = customer.getAge();
 			}
 		}
 		return age;
