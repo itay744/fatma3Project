@@ -32,9 +32,13 @@ public class SalesOffice {
 			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\\t");
+				int id = Integer.parseInt(temp[0]);
+				String name = temp[1];
+				int age = Integer.parseInt(temp[2]);
+				char gender = temp[3].charAt(0);
+				int empId = Integer.parseInt(temp[4]);
 				try {
-					customers.add(new Customers(Integer.parseInt(temp[0]), temp[1], Integer.parseInt(temp[2]),
-							temp[3].charAt(0), Integer.parseInt(temp[4]), orders, events));
+					customers.add(new Customers(id, name, age, gender, empId, orders , events));
 				} catch (WrongGenderInputException e) {
 					System.err.println("Wrong gender input, can be only 'm' or 'f' ");
 
@@ -61,8 +65,11 @@ public class SalesOffice {
 			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\\t");
+				String name = temp[0];
+				int eventId = Integer.parseInt(temp[1]);
+				double pricePerTicket = Double.parseDouble(temp[2]);
 				try {
-					events.add(new Events(temp[0], Integer.parseInt(temp[1]), Integer.parseInt(temp[2]), orders));
+					events.add(new Events(name, eventId, pricePerTicket, orders));
 				} catch (NegativePriceException e) {
 					System.err.println("Price cannot be nagative");
 				}
@@ -88,13 +95,17 @@ public class SalesOffice {
 			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\\t");
+				int eventId = Integer.parseInt(temp[0]);
+				int customerId = Integer.parseInt(temp[1]);
+				int numberOfTickets = Integer.parseInt(temp[3]);
+				
+				
 				if (temp.length == 5) {
-
-					orders.add(new OnlineOrders(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]),
-							Integer.parseInt(temp[3]), temp[4], events));
-				} else {
-					orders.add(new OfflineOrders(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]),
-							Integer.parseInt(temp[3]), Integer.parseInt(temp[2]), events));
+					String url = temp[4];
+					orders.add(new OnlineOrders(eventId, customerId, numberOfTickets, url, events));
+				} if (temp.length == 4) {
+					int soldByEmpId = Integer.parseInt(temp[2]);
+					orders.add(new OfflineOrders(eventId, customerId, numberOfTickets, soldByEmpId, events));
 
 				}
 
@@ -120,13 +131,15 @@ public class SalesOffice {
 			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\\t");
-
+				int id = Integer.parseInt(temp[0]);
+				String name = temp[1];
+				int age = Integer.parseInt(temp[2]);
 				if (temp.length == 5) {
-					employees.add(new marketingWorkers(Integer.parseInt(temp[0]), temp[1],
-							Integer.parseInt(temp[2]), temp[4], orders, customers, events));
-				} else {
-					employees.add(new salesWorkers(Integer.parseInt(temp[0]), temp[1], Integer.parseInt(temp[2]),
-							Double.parseDouble((temp[3])), orders, customers, events));
+					String phone = temp[4];
+					employees.add(new marketingWorkers(id, name, age, phone, orders, customers, events));
+				} if (temp.length == 4){
+					double saleRate = Double.parseDouble((temp[3]));
+					employees.add(new salesWorkers(id, name, age, saleRate, orders, customers, events));
 				}
 
 			}
@@ -154,7 +167,7 @@ public class SalesOffice {
 	}
 
 	private void printReport(double[] ages, int event) {
-		System.out.println("Event name:"+ events.elementAt(event).getName());
+		System.out.println("Event name:" + events.elementAt(event).getName());
 		System.out.println("0-18: " + (int) (ages[0]) + "%");
 		System.out.println("18-24: " + (int) (ages[1]) + "%");
 		System.out.println("25-35: " + (int) (ages[2]) + "%");
@@ -220,7 +233,7 @@ public class SalesOffice {
 		double revenue = 0;
 		double expenses = 0;
 		double profit = 0;
-		for (Orders order: orders) {
+		for (Orders order : orders) {
 			revenue += order.getOrderPrice(events);
 		}
 		for (Employees emp : employees) {
@@ -229,7 +242,7 @@ public class SalesOffice {
 		System.out.println("revenue: " + revenue);
 		System.out.println("expenses: " + expenses);
 		profit = revenue - expenses;
-		System.out.print("profit: "+ profit);
+		System.out.print("profit: " + profit);
 
 		return revenue - expenses;
 	}
@@ -243,20 +256,20 @@ public class SalesOffice {
 		for (Employees emp : employees) {
 			System.out.println("Name: " + emp.getName() + " ; age: " + emp.getAge());
 		}
-			System.out.println("---------------");
+		System.out.println("---------------");
 		Collections.sort(events);
 		Collections.reverse(events);
 		System.out.println("Event list:");
-		for (Events event : events)  {
+		for (Events event : events) {
 			System.out.println("Name: " + event.getName());
 		}
 		System.out.println("---------------");
 		Collections.sort(customers);
 		Collections.reverse(customers);
 		System.out.println("Customer list:");
-		for (Customers customer : customers)  {
-			System.out.println("Name: " + customer.getName() + " ; age: "
-					+ customer.getAge() + " ; Gender: " + customer.getGender());
+		for (Customers customer : customers) {
+			System.out.println("Name: " + customer.getName() + " ; age: " + customer.getAge() + " ; Gender: "
+					+ customer.getGender());
 		}
 	}
 
@@ -308,11 +321,11 @@ public class SalesOffice {
 		String fCustomers = new String("Customers.txt");
 		String fOrders = new String("Orders.txt");
 		SalesOffice s = new SalesOffice(fEvents, fEmployees, fCustomers, fOrders);
-	//	s.printAgeReport(1);
+		// s.printAgeReport(1);
 //		//System.out.println(s.getBalance());
 //		s.getOnlineProportion();
 //		s.getBalance();
-	//	s.firmReport();
+		// s.firmReport();
 //		Comparable a = getMax(s.employees);
 //		s.firmReport();
 //		// System.out.println(s.events.elementAt(0).getName());
@@ -321,8 +334,8 @@ public class SalesOffice {
 //		System.out.println(s.orders.elementAt(144).getEventId());
 
 //		System.out.println(((Events)c).getTotalTickets());
-		//System.out.println(s.getBalance());
-	//	System.out.println(getAvgValue(s.orders));
+	//s.getBalance();
+		 System.out.println(getAvgValue(s.orders));
 //	s.firmReport();
 
 	}

@@ -43,6 +43,10 @@ public class Orders implements Comparable<Orders>, Valueable {
 	public double getValue() {
 		return orderPrice;
 	}
+	
+	public int getNumberOfTickets() {
+		return numberOfTickets;
+	}
 
 	public int getCustomerId() {
 		return customerId;

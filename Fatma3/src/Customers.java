@@ -23,9 +23,8 @@ public class Customers implements Comparable<Customers>, Valueable {
 		}
 		this.gender = gender;
 		registeredByEmpId = empId;
-		totalOrdersPrice = calculateOrdersPrice(orders, events);
 		totalTickets = totalTickets(orders);
-
+		totalOrdersPrice = calculateOrdersPrice(orders, events);
 	}
 
 	public int getId() {
@@ -60,7 +59,7 @@ public class Customers implements Comparable<Customers>, Valueable {
 		int numOfTickets = 0;
 		for (Orders order : orders) {
 			if (getId() == order.getCustomerId()) {
-				numOfTickets+= order.getValue();// gets the number of tickets from order
+				numOfTickets+= order.numberOfTickets;// gets the number of tickets from order
 			}
 		}
 		return numOfTickets;
