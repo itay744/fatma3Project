@@ -1,6 +1,4 @@
 
-import java.util.Vector;
-
 public class Customer implements Comparable<Customer>, Valueable {
 	private int id;
 	private String name;
@@ -12,7 +10,7 @@ public class Customer implements Comparable<Customer>, Valueable {
 	private static final char MALE = 'm';
 	private static final char FEMALE = 'f';
 
-	public Customer(int id, String name, int age, char gender, int empId) throws WrongGenderInputException {
+	public Customer(int id, String name, int age, char gender, int empId) throws WrongGenderInputException {// constructor
 
 		this.id = id;
 		this.name = name;
@@ -26,63 +24,43 @@ public class Customer implements Comparable<Customer>, Valueable {
 		totalOrdersPrice = 0;
 	}
 
-	public int getId() {
-		return id;
+	public int getId() {// return id
+		return this.id;
 	}
 
-	public String getName() {
-		return new String(name);
+	public String getName() {// return name
+		return this.name;
 	}
 
-	public int getAge() {
+	public int getAge() {// return age
 		return age;
 	}
 
-	public char getGender() {
+	public char getGender() {// return gender
 		return gender;
 	}
 
-	public int getRegisteredEmpId() {
+	public int getRegisteredEmpId() {// return the employ that register customer
 		return registeredByEmpId;
 	}
 
-	public double getValue() {
+	public double getValue() {// valuable implement , return total order price
 		return totalOrdersPrice;
 	}
 
-	public int getTotalTickets() {
+	public int getTotalTickets() {// return total tickets bought
 		return totalTickets;
 	}
 
-//	private int totalTickets(Vector<Orders> orders) {
-//		int numOfTickets = 0;
-//		for (Orders order : orders) {
-//			if (getId() == order.getCustomerId()) {
-//				numOfTickets+= order.numberOfTickets;// gets the number of tickets from order
-//			}
-//		}
-//		return numOfTickets;
-//	}
-
-	public void addToTotalTickets(int amount) {
+	public void addToTotalTickets(int amount) {// adding tickets to total tickets
 		this.totalTickets += amount;
 	}
 
-	public void addToTotalOrdersPrice(double orderPrice) {
+	public void addToTotalOrdersPrice(double orderPrice) {// adding order price to total amount
 		this.totalOrdersPrice += orderPrice;
 	}
 
-	private double calculateOrdersPrice(Vector<Orders> orders, Vector<Events> events) {
-		double totalPrice = 0;
-		for (Orders order : orders) {
-			if (getId() == order.getCustomerId()) {
-				totalPrice += order.getOrderPrice(events);
-			}
-		}
-		return totalPrice;
-	}
-
-	public int compareTo(Customer other) {
+	public int compareTo(Customer other) {// comparable implement compare by total tickets 
 		return this.totalTickets - other.totalTickets;
 	}
 
