@@ -7,20 +7,25 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class SalesOffice {
-	private Vector<Customers> customers;
+	private Vector<Customer> customers;
 	private Vector<Events> events;
 	private Vector<Orders> orders;
 	private Vector<Employees> employees;
 
 	public SalesOffice(String fileEvents, String fileEmployees, String fileCustomers, String fileTicketsSales) {
-		customers = new Vector<Customers>();
+		customers = new Vector<Customer>();
 		events = new Vector<Events>();
 		orders = new Vector<Orders>();
 		employees = new Vector<Employees>();
-		readOrdersFile(fileTicketsSales);
+		readFiles(fileEvents, fileEmployees, fileCustomers, fileTicketsSales);
+
+	}
+
+	private void readFiles(String fileEvents, String fileEmployees, String fileCustomers, String fileTicketsSales) {
 		readEventsFile(fileEvents);
-		readCustomersFile(fileCustomers);
 		readEmployeesFile(fileEmployees);
+		readCustomersFile(fileCustomers);
+		readOrdersFile(fileTicketsSales);
 
 	}
 
@@ -38,7 +43,10 @@ public class SalesOffice {
 				char gender = temp[3].charAt(0);
 				int empId = Integer.parseInt(temp[4]);
 				try {
-					customers.add(new Customers(id, name, age, gender, empId, orders , events));
+					Customer c = new Customer(id, name, age, gender, empId);
+					customers.add(c);
+					marketingWorkers mw = (marketingWorkers) findEmployeesByID(c.getRegisteredEmpId());
+					mw.addCustomerRateToSalary();
 				} catch (WrongGenderInputException e) {
 					System.err.println("Wrong gender input, can be only 'm' or 'f' ");
 
@@ -69,7 +77,7 @@ public class SalesOffice {
 				int eventId = Integer.parseInt(temp[1]);
 				double pricePerTicket = Double.parseDouble(temp[2]);
 				try {
-					events.add(new Events(name, eventId, pricePerTicket, orders));
+					events.add(new Events(name, eventId, pricePerTicket));
 				} catch (NegativePriceException e) {
 					System.err.println("Price cannot be nagative");
 				}
@@ -98,16 +106,19 @@ public class SalesOffice {
 				int eventId = Integer.parseInt(temp[0]);
 				int customerId = Integer.parseInt(temp[1]);
 				int numberOfTickets = Integer.parseInt(temp[3]);
-				
-				
+				boolean byPhone = false;
+
 				if (temp.length == 5) {
 					String url = temp[4];
-					orders.add(new OnlineOrders(eventId, customerId, numberOfTickets, url, events));
-				} if (temp.length == 4) {
+					orders.add(new OnlineOrders(eventId, customerId, numberOfTickets, url, events, employees,customers));
+				}
+				if (temp.length == 4) {
 					int soldByEmpId = Integer.parseInt(temp[2]);
-					orders.add(new OfflineOrders(eventId, customerId, numberOfTickets, soldByEmpId, events));
+					orders.add(new OfflineOrders(eventId, customerId, numberOfTickets, soldByEmpId,events, employees,customers));
+					byPhone =true;
 
 				}
+				sendOrderInfoToRelevantPlaces(byPhone);
 
 			}
 
@@ -123,6 +134,60 @@ public class SalesOffice {
 		}
 	}
 
+	private void sendOrderInfoToRelevantPlaces(boolean byPhone) {
+		Orders o = this.orders.elementAt(this.orders.size()-1);
+		Customer c = findCustomerByID(o.getCustomerId());
+		Events e = findEventByID(o.getEventId());
+		double fullOrderPrice = getOrderPrice(o.getNumberOfTickets(), e);
+		o.setOrderPrice(fullOrderPrice);
+		if (c!=null) {
+			c.addToTotalTickets(o.getNumberOfTickets());
+			c.addToTotalOrdersPrice(fullOrderPrice);
+			Employees emp = findEmployeesByID(c.getRegisteredEmpId());
+			emp.addOrderToSalary(fullOrderPrice);
+		}
+		if (byPhone) {
+			Employees emp = findEmployeesByID(((OfflineOrders) o).getSellerId());
+			emp.addOrderToSalary(fullOrderPrice);
+		}
+			
+	}
+	
+	private double getOrderPrice(int numberOfTickets, Events e) {
+		// TODO Auto-generated method stub
+		if (e!=null) {
+			return numberOfTickets*e.getPricePerTicket();
+		}
+		return 0;
+	}
+
+	private Customer findCustomerByID(int id) {
+		for(Customer c: customers) {
+			if (c.getId()==id) {
+				return c;
+			}
+		}
+		return null;
+	}
+	
+	private Events findEventByID(int id) {
+		for(Events e: events) {
+			if (e.getEventId()==id) {
+				return e;
+			}
+		}
+		return null;
+	}
+	
+	private Employees findEmployeesByID(int id) {
+		for(Employees e: employees) {
+			if (e.getId()==id) {
+				return e;
+			}
+		}
+		return null;
+	}
+
 	private void readEmployeesFile(String file) {
 		BufferedReader br = null;
 		try {
@@ -136,10 +201,11 @@ public class SalesOffice {
 				int age = Integer.parseInt(temp[2]);
 				if (temp.length == 5) {
 					String phone = temp[4];
-					employees.add(new marketingWorkers(id, name, age, phone, orders, customers, events));
-				} if (temp.length == 4){
+					employees.add(new marketingWorkers(id, name, age, phone,  events));
+				}
+				if (temp.length == 4) {
 					double saleRate = Double.parseDouble((temp[3]));
-					employees.add(new salesWorkers(id, name, age, saleRate, orders, customers, events));
+					employees.add(new salesWorkers(id, name, age, saleRate, events));
 				}
 
 			}
@@ -267,7 +333,7 @@ public class SalesOffice {
 		Collections.sort(customers);
 		Collections.reverse(customers);
 		System.out.println("Customer list:");
-		for (Customers customer : customers) {
+		for (Customer customer : customers) {
 			System.out.println("Name: " + customer.getName() + " ; age: " + customer.getAge() + " ; Gender: "
 					+ customer.getGender());
 		}
@@ -334,8 +400,8 @@ public class SalesOffice {
 //		System.out.println(s.orders.elementAt(144).getEventId());
 
 //		System.out.println(((Events)c).getTotalTickets());
-	//s.getBalance();
-		 System.out.println(getAvgValue(s.orders));
+		// s.getBalance();
+		System.out.println(getAvgValue(s.employees));
 //	s.firmReport();
 
 	}

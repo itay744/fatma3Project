@@ -6,7 +6,7 @@ public class Events implements Comparable<Events>, Valueable {
 	private double pricePerTicket;
 	private int totalTickets;
 
-	public Events(String name, int id, double pricePerTicket, Vector<Orders> orders) throws NegativePriceException {
+	public Events(String name, int id, double pricePerTicket) throws NegativePriceException {
 
 		this.name = name;
 		eventId = id;
@@ -14,7 +14,7 @@ public class Events implements Comparable<Events>, Valueable {
 			throw new NegativePriceException();
 		}
 		this.pricePerTicket = pricePerTicket;
-		this.totalTickets = countTotalTickets(orders);
+		//id.this.totalTickets = countTotalTickets(orders);
 
 	}
 
@@ -27,9 +27,9 @@ public class Events implements Comparable<Events>, Valueable {
 	}
 
 
-	public double getTotalTickets() {
-		return totalTickets;
-	}
+//	public double getTotalTickets() {
+//		return totalTickets;
+//	}
 
 	public double getPricePerTicket() {
 		return pricePerTicket;
@@ -39,14 +39,14 @@ public class Events implements Comparable<Events>, Valueable {
 		int count = 0;
 		for (Orders order : orders) {
 			if (order.getEventId() == eventId) {
-				count += order.getValue();
+				count += order.getNumberOfTickets();
 			}
 		}
 		return count;
 
 	}
 
-	@Override
+	
 	public int compareTo(Events other) {
 		return  this.totalTickets - other.totalTickets;
 		
