@@ -16,24 +16,28 @@ abstract class Employees implements Comparable<Employees>, Valueable {
 	}
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public String getName() {
-		return new String(name);
+		return this.name;
 	}
 
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	public double getValue() {
 		return salary;
 	}
+	
+	public double getSalary() {
+		return salary;
+	}
 
 	public int compareTo(Employees other) {
 
-		return (int) (this.salary - other.salary);
+		return (int) (this.salary - other.getSalary());
 	}
 
 	public void addOrderToSalary(double orderPrice) {

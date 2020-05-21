@@ -147,7 +147,7 @@ public class SalesOffice {
 			emp.addOrderToSalary(fullOrderPrice);
 		}
 		if (byPhone) {
-			Employees emp = findEmployeesByID(((OfflineOrders) o).getSellerId());
+			Employees emp = findEmployeesByID(((OfflineOrders)o).getSellerId());
 			emp.addOrderToSalary(fullOrderPrice);
 		}
 			
