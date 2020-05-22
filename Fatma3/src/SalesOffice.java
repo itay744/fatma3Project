@@ -138,22 +138,38 @@ public class SalesOffice {
 		Order o = this.orders.elementAt(this.orders.size() - 1); // saving current Order
 		Customer c = findCustomerByID(o.getCustomerId());// saving current Customer
 		Event e = findEventByID(o.getEventId());// saving current event
-		double fullOrderPrice = getOrderPrice(o.getNumberOfTickets(), e); // get order price
+		double fullOrderPrice = fullOderPrice (o,e); // get order price
 		e.addToTotalTickets(o.numberOfTickets);
 		o.setOrderPrice(fullOrderPrice); // saving order price to current order object
+	}
+	
+	private void updateCustomerInfo(Customer c,Order o,boolean byPhone,double fullOrderPrice) {// updating the customer info.
 		if (c != null) {// if customer found
 			c.addToTotalTickets(o.getNumberOfTickets()); // add tickets to customer
 			c.addToTotalOrdersPrice(fullOrderPrice);// add total price to customer
-			if (byPhone) {// if employee is a marketing worker
-				Employee emp = findEmployeeByID(((OfflineOrder) o).getSellerId());// finding orders by emp clients
-				emp.addOrderToSalary(fullOrderPrice);// adding bonus
-			}
-				Employee emp = findEmployeeByID(c.getRegisteredEmpId());// find employ that sign the customer
-				emp.addOrderToSalary(fullOrderPrice);// adding order to salary
-			
+			updateEmployeeInfo(o,c,byPhone,fullOrderPrice);			
 		}
+		
+	}
+	
+	private double fullOderPrice (Order o, Event e) { // returning the full order price.
+		return  getOrderPrice(o.getNumberOfTickets(), e);
+	}
+	
+	private void updateEmployeeInfo(Order o,Customer c ,boolean byPhone, double fullOrderPrice) { // updating info about the employee
+		if (byPhone) {// if employee is a marketing worker
+			Employee emp = findEmployeeByID(((OfflineOrder)o).getSellerId());// finding orders by emp clients
+			ubdateEmpSalary(emp,fullOrderPrice);
+		}
+			Employee emp = findEmployeeByID(c.getRegisteredEmpId());// find employ that sign the customer
+			ubdateEmpSalary(emp,fullOrderPrice);
 
 	}
+	
+	private void ubdateEmpSalary(Employee emp, double fullOrderPrice) { // updating the employee salary.
+		emp.addOrderToSalary(fullOrderPrice);// adding bonus
+	}
+	
 
 	private double getOrderPrice(int numberOfTickets, Event e) { // return order price
 		// TODO Auto-generated method stub
