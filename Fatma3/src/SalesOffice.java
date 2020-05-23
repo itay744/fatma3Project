@@ -37,23 +37,10 @@ public class SalesOffice {
 			line = br.readLine();// reading lines from file
 			while ((line = br.readLine()) != null) {// runs until line is null
 				String temp[] = line.split("\\t");// splitting string by tab
-				int id = Integer.parseInt(temp[0]);
-				String name = temp[1];
-				int age = Integer.parseInt(temp[2]);
-				char gender = temp[3].charAt(0);
-				int empId = Integer.parseInt(temp[4]);
-				try {
-					Customer c = new Customer(id, name, age, gender, empId);// creating new customer
-					customers.add(c);// adding him to vector
-					marketingWorker mw = (marketingWorker) findEmployeeByID(c.getRegisteredEmpId());// finding the emplyee who wrote the customer
-					mw.addCustomerRateToSalary();// adding signing rate to employee
-				} catch (WrongGenderInputException e) {// if input gender is illegal catch exception
-					System.err.println("Wrong gender input, can be only 'm' or 'f' ");
-
-				}
+				newCustomer(temp);
 			}
 
-		} catch (IOException e) {// catching io exception
+		} catch (IOException e) {// catching IO exception 
 			e.printStackTrace();
 		} finally {
 			try {
@@ -64,8 +51,33 @@ public class SalesOffice {
 			}
 		}
 	}
+	
+	
+	private void addingNewCustomerToList(int id,String name,int age,char gender,int empId) { // inserting new customer into the list.
+		try {
+			Customer c = new Customer(id, name, age, gender, empId);// creating new customer
+			customers.add(c);// adding him to vector
+			marketingWorker mw = (marketingWorker) findEmployeeByID(c.getRegisteredEmpId());// finding the emplyee who wrote the customer
+			mw.addCustomerRateToSalary();// adding signing rate to employee
+		} catch (WrongGenderInputException e) {// if input gender is illegal catch exception
+			System.err.println("Wrong gender input, can be only 'm' or 'f' ");
 
-	private void readEventsFile(String file) { // reads from the Customers file.
+		}
+	}
+	
+	private void newCustomer(String [] temp) { //saving the customer values into the temp arry.
+		int id = Integer.parseInt(temp[0]);
+		String name = temp[1];
+		int age = Integer.parseInt(temp[2]);
+		char gender = temp[3].charAt(0);
+		int empId = Integer.parseInt(temp[4]);
+		addingNewCustomerToList(id,name,age,gender,empId); // send to create the new customer.
+		
+	}
+	
+	
+	
+	private void readEmployeesFile(String file) {
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -73,14 +85,7 @@ public class SalesOffice {
 			line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String temp[] = line.split("\\t");
-				String name = temp[0];
-				int eventId = Integer.parseInt(temp[1]);
-				double pricePerTicket = Double.parseDouble(temp[2]);
-				try {
-					events.add(new Event(name, eventId, pricePerTicket));
-				} catch (NegativePriceException e) {//  catching negative price input
-					System.err.println("Price cannot be nagative");
-				}
+				newEmployee(temp);
 			}
 
 		} catch (IOException e) {
@@ -94,8 +99,70 @@ public class SalesOffice {
 			}
 		}
 	}
+	
+	
+	private void addingNewEmployeToList(int id,String name,int age, String[]temp) { // inserting new employee into the list.
+		if (temp.length == 5) {
+			String phone = temp[4];
+			employees.add(new marketingWorker(id, name, age, phone));
+		}
+		if (temp.length == 4) {
+			double saleRate = Double.parseDouble((temp[3]));
+			employees.add(new salesWorker(id, name, age, saleRate));
+		}
+	}
+	
+	private void newEmployee(String [] temp) { //saving the employee values into the temp arry.
+		int id = Integer.parseInt(temp[0]);
+		String name = temp[1];
+		int age = Integer.parseInt(temp[2]);
+		addingNewEmployeToList(id,name,age,temp); // send to create the new customer.
+		
+	}
 
-	private void readOrdersFile(String file) { // reads from the Customers file.
+
+	private void readEventsFile(String file) { // reads from the Customers file.
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(file));
+			String line;
+			line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String temp[] = line.split("\\t");
+				newEvent(temp);			
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				br.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	
+	private void addingNewEventToList(String name,String[]temp,int eventId,double pricePerTicket) { // inserting new event into the list.
+		try {
+			events.add(new Event(name, eventId, pricePerTicket));
+		} catch (NegativePriceException e) {//  catching negative price input
+			System.err.println("Price cannot be nagative");
+		}
+	}
+	
+	private void newEvent(String [] temp) { //saving the event values into the temp arry.
+		String name = temp[0];
+		int eventId = Integer.parseInt(temp[1]);
+		double pricePerTicket = Double.parseDouble(temp[2]);
+		addingNewEventToList(name,temp,eventId,pricePerTicket); // send to create the new customer.
+		
+	}
+
+	private void readOrdersFile(String file) { // reads from the orders file.
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -107,19 +174,7 @@ public class SalesOffice {
 				int customerId = Integer.parseInt(temp[1]);
 				int numberOfTickets = Integer.parseInt(temp[3]);
 				boolean byPhone = false;
-
-				if (temp.length == 5) {
-					String url = temp[4];
-					orders.add(new OnlineOrder(eventId, customerId, numberOfTickets, url));
-				}
-				if (temp.length == 4) {
-					int soldByEmpId = Integer.parseInt(temp[2]);
-					orders.add(new OfflineOrder(eventId, customerId, numberOfTickets, soldByEmpId));
-					byPhone = true;
-
-				}
-				sendOrderInfoToRelevantPlaces(byPhone);// sending order info to the relevant objects
-
+				addingNewOrderToList(temp,customerId,eventId,numberOfTickets, byPhone);
 			}
 
 		} catch (IOException e) {
@@ -131,31 +186,56 @@ public class SalesOffice {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+        }	
 	}
+	
+	
+//	
+	private void addingNewOrderToList(String[]temp,int customerId,int eventId,int numberOfTickets,boolean byPhone) { // inserting new order into the list.
 
-	private void sendOrderInfoToRelevantPlaces(boolean byPhone) {// sending order info to relevant objects
-		Order o = this.orders.elementAt(this.orders.size() - 1); // saving current Order
-		Customer c = findCustomerByID(o.getCustomerId());// saving current Customer
-		Event e = findEventByID(o.getEventId());// saving current event
-		double fullOrderPrice = fullOderPrice (o,e); // get order price
-		e.addToTotalTickets(o.numberOfTickets);
-		o.setOrderPrice(fullOrderPrice); // saving order price to current order object
+		if (temp.length == 5) {
+			String url = temp[4];
+			orders.add(new OnlineOrder(eventId, customerId, numberOfTickets, url));
+		}
+		if (temp.length == 4) {
+			int soldByEmpId = Integer.parseInt(temp[2]);
+			orders.add(new OfflineOrder(eventId, customerId, numberOfTickets, soldByEmpId));
+			byPhone = true;
+
+		}
+		sendOrderInfoToRelevantPlaces(byPhone);// sending order info to the relevant objects
+
 	}
+		
+	private void sendOrderInfoToRelevantPlaces(boolean byPhone) {// sending order info to relevant objects
+			Order o = this.orders.elementAt(this.orders.size() - 1); // saving current Order
+			Customer c = findCustomerByID(o.getCustomerId());// saving current Customer
+			Event e = findEventByID(o.getEventId());// saving current event
+			double fullOrderPrice = fullOderPrice (o,e); // get order price
+			o.setOrderPrice(fullOrderPrice); // saving order price to current order object
+			if(e != null) {
+			e.addToTotalTickets(o.getNumberOfTickets());
+			}
+			if (c != null) {// if customer found
+				updateCustomerInfo(c,o,byPhone,fullOrderPrice);				
+			}
+
+		}
+	
+	
 	
 	private void updateCustomerInfo(Customer c,Order o,boolean byPhone,double fullOrderPrice) {// updating the customer info.
-		if (c != null) {// if customer found
 			c.addToTotalTickets(o.getNumberOfTickets()); // add tickets to customer
 			c.addToTotalOrdersPrice(fullOrderPrice);// add total price to customer
-			updateEmployeeInfo(o,c,byPhone,fullOrderPrice);			
-		}
-		
+			updateEmployeeInfo(o,c,byPhone,fullOrderPrice);				
 	}
-	
+
 	private double fullOderPrice (Order o, Event e) { // returning the full order price.
 		return  getOrderPrice(o.getNumberOfTickets(), e);
 	}
 	
+	
+
 	private void updateEmployeeInfo(Order o,Customer c ,boolean byPhone, double fullOrderPrice) { // updating info about the employee
 		if (byPhone) {// if employee is a marketing worker
 			Employee emp = findEmployeeByID(((OfflineOrder)o).getSellerId());// finding orders by emp clients
@@ -166,9 +246,13 @@ public class SalesOffice {
 
 	}
 	
+	
+
 	private void ubdateEmpSalary(Employee emp, double fullOrderPrice) { // updating the employee salary.
 		emp.addOrderToSalary(fullOrderPrice);// adding bonus
 	}
+	
+	
 	
 
 	private double getOrderPrice(int numberOfTickets, Event e) { // return order price
@@ -178,6 +262,9 @@ public class SalesOffice {
 		}
 		return 0;
 	}
+	
+	
+	
 
 	private Customer findCustomerByID(int id) {// find specific customer by id
 		for (Customer c : customers) {
@@ -187,6 +274,8 @@ public class SalesOffice {
 		}
 		return null;
 	}
+	
+	
 
 	private Event findEventByID(int id) {// find specific event by id
 		for (Event e : events) {
@@ -196,6 +285,9 @@ public class SalesOffice {
 		}
 		return null;
 	}
+	
+	
+	
 
 	private Employee findEmployeeByID(int id) {// find specific employee by id
 		for (Employee e : employees) {
@@ -205,6 +297,9 @@ public class SalesOffice {
 		}
 		return null;
 	}
+	
+	
+	
 
 	private int findCustomerAge(Order o) {// find customer age from specific order
 		for (Customer c : customers) {
@@ -215,41 +310,11 @@ public class SalesOffice {
 		return 0;
 
 	}
+	
+	
+	
 
-	private void readEmployeesFile(String file) {
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new FileReader(file));
-			String line;
-			line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String temp[] = line.split("\\t");
-				int id = Integer.parseInt(temp[0]);
-				String name = temp[1];
-				int age = Integer.parseInt(temp[2]);
-				if (temp.length == 5) {
-					String phone = temp[4];
-					employees.add(new marketingWorker(id, name, age, phone));
-				}
-				if (temp.length == 4) {
-					double saleRate = Double.parseDouble((temp[3]));
-					employees.add(new salesWorker(id, name, age, saleRate));
-				}
-
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				br.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-
+	
 	public void printAgeReport(int eventID) {// calculating and printing age report
 		int[] customersAges = customersAgesInEvent(eventID);// count customer ages in event
 		int totalCustomers = totalCustomersInEvent(eventID);// count total customer in events
@@ -324,7 +389,7 @@ public class SalesOffice {
 			expenses += emp.getValue();// count all salary expenses
 		}
 		System.out.println("revenue: " + revenue);
-		System.out.println("expenses: " + expenses);// לזכור למחוק את החלק הזה
+		System.out.println("expenses: " + expenses);// ׳�׳–׳›׳•׳¨ ׳�׳�׳—׳•׳§ ׳�׳× ׳”׳—׳�׳§ ׳”׳–׳”
 		profit = revenue - expenses;
 		System.out.print("profit: " + profit);
 
@@ -407,8 +472,8 @@ public class SalesOffice {
 		SalesOffice s = new SalesOffice(fEvents, fEmployees, fCustomers, fOrders);
 	// s.printAgeReport(14);
 //System.out.println(s.getBalance());
-	s.getOnlineProportion();
-//		s.getBalance();
+//	s.getOnlineProportion();
+		s.getBalance();
 //	 s.firmReport();
 //		Comparable a = getMax(s.employees);
 //		System.out.println(((Employee)a).getAge());
@@ -416,11 +481,11 @@ public class SalesOffice {
 //		// System.out.println(s.events.elementAt(0).getName());
 //		 Comparable c = getMax(s.orders);
 //		 System.out.println(((Orders)c).getEventId());
-		System.out.println(s.getOnlineProportion());
+//		System.out.println(s.getOnlineProportion());
 
 //		System.out.println(((Events)c).getTotalTickets());
 //		 s.getBalance();
-		System.out.println(getAvgValue(s.orders));
+//		System.out.println(getAvgValue(s.orders));
 //	s.firmReport();
 
 	}
